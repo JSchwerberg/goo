@@ -1,7 +1,6 @@
-#from django.shortcuts import render
-#from django.http import HttpResponse
-#from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.pagination import Paginator, EmptyPage, PageNotAnInteger
 from files.models import File
