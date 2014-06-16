@@ -24,11 +24,15 @@ def file_list(request):
     # Set optional search terms
     search_terms = request.QUERY_PARAMS.get('search')
     if search_terms not None:
-    	# Equivalent to 'SELECT * from files WHERE filename LIKE 
-    	# '%search_terms%' OR description LIKE '%search_terms%'
+    	# Equivalent to "SELECT * from files WHERE filename LIKE 
+    	# '%search_terms%' OR description LIKE '%search_terms%'"
     	# Case insensitive
     	queryset = queryset.filter(Q(filename__icontains=search_terms) | 
     		Q(description__icontains=search_terms))
+
+    # Sort queryset by modified date (descending),  
+    # removing any duplicate entries
+    queryset = queryset.order_by('-modified').distinct('id')
     
     # Allow API end-users to specify a custom amount of items per page
     items_per_page = request.QUERY_PARAMS.get('items') 
