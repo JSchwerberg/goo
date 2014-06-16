@@ -7,7 +7,7 @@ class SearchIndex(models.Model):
     path = models.CharField(max_length=350)
     folder = models.CharField(max_length=350)
     md5 = models.CharField(max_length=32)
-    type = models.CharField(max_length=8)
+    filetype = models.CharField(max_length=8)
     description = models.TextField()
     is_flashable = models.BooleanField(default=False)
     modified = models.CharField(max_length=35)
@@ -23,9 +23,10 @@ class SearchIndex(models.Model):
     gapps_package = models.IntegerField()
     incremental_file = models.IntegerField()
     filesize = models.BigIntegerField()
+    download_count = models.BigIntegerField()
+    last_download = models.DateTimeField(auto_now_add=True)
 
 class Blacklist(models.Model):
     keyword = models.CharField(max_length=150)
     status = models.BooleanField()
-
 
