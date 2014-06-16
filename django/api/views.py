@@ -24,11 +24,11 @@ def file_list(request):
     # Set optional search terms
     search_terms = request.QUERY_PARAMS.get('search')
     if search_terms not None:
-    	# Equivalent to "SELECT * from files WHERE filename LIKE 
-    	# '%search_terms%' OR description LIKE '%search_terms%'"
-    	# Case insensitive
-    	queryset = queryset.filter(Q(filename__icontains=search_terms) | 
-    		Q(description__icontains=search_terms))
+    	# Equivalent to "SELECT * from files WHERE MATCH(files, filename)  
+    	# AGAINST (search_terms IN BOOLEAN MODE) OR MATCH(files, description) 
+    	# AGAINST (search_terms IN BOOLEAN MODE)"
+    	queryset = queryset.filter(Q(filename__search=search_terms) | 
+    		Q(description__search=search_terms))
 
     # Sort queryset by modified date (descending),  
     # removing any duplicate entries
