@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class SearchIndex(models.Model):
+class File(models.Model):
     filename = models.CharField(max_length=250)
     path = models.CharField(max_length=350)
     folder = models.CharField(max_length=350)
