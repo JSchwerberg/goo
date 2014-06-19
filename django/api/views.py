@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.pagination import Paginator, EmptyPage, PageNotAnInteger
 from files.models import File
-from files.serializers import PaginatedFileSerializer
+from files.serializers import PaginatedFileSerializer, FileSerializer
 
 
 @api_view('GET')
@@ -55,3 +55,41 @@ def file_list(request):
     serializer = PaginatedFileSerializer(files, context=serializer_context)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view('POST')
+def file_create(request):
+    """
+    Create a new file entry in the index.
+    """
+
+    serializer = FileSerializer(data=request.DATA)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Repsonse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def file_detail(request, pk):
+    """
+    Retrieve, update, or delete a specific file
+    """
+
+    try:
+        file = File.objects.get(pk=pk)
+    except File.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = FileSerializer(file)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = FileSerializer(file, data=request.DATA)
+        if serializer.is_valid():
+            serializer.save()
+            return Repsonse(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        file.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

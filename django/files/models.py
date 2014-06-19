@@ -11,7 +11,6 @@ class File(models.Model):
     description = models.TextField()
     is_flashable = models.BooleanField(default=False)
     modified = models.CharField(max_length=35)
-    downloads = models.PositiveIntegerField(default=0)
     status = models.SmallIntegerField(default=1)
     additional_info = models.TextField()
     short_url = models.CharField(max_length=32)
@@ -23,8 +22,8 @@ class File(models.Model):
     gapps_package = models.IntegerField()
     incremental_file = models.IntegerField()
     filesize = models.BigIntegerField()
-    download_count = models.BigIntegerField()
-    last_download = models.DateTimeField(auto_now_add=True)
+    download_count = models.PositiveIntegerField(default=0)
+    last_download = models.DateTimeField(auto_now=True)
 
 class Blacklist(models.Model):
     keyword = models.CharField(max_length=150)
