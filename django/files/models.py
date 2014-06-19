@@ -25,7 +25,21 @@ class File(models.Model):
     download_count = models.PositiveIntegerField(default=0)
     last_download = models.DateTimeField(auto_now=True)
 
-class Blacklist(models.Model):
+    class Meta:
+        verbose_name = _('File')
+        verbose_name_plural = _('Files')
+
+    def __unicode__(self):
+        return u'%s' % self.path
+
+class BlacklistKeyword(models.Model):
     keyword = models.CharField(max_length=150)
     status = models.BooleanField()
+
+    class Meta:
+        verbose_name = ('Blacklist Keyword')
+        verbose_name_plural = _('Blacklist Keywords')
+
+    def __unicode__(self):
+        return u'%s' % self.keyword
 
