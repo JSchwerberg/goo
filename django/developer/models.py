@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext as _
 
 # Create your models here.
 
@@ -17,6 +18,7 @@ class Developer(models.Model):
 	xda_rd_url = models.CharField(, max_length=50)
 	created = models.DateTimeField(auto_now_add=True)
 	status = models.BooleanField()
+	denied = models.BooleanField()
     
     class Meta:
         verbose_name = _('Developer')
