@@ -25,7 +25,7 @@ class Developer(models.Model):
         verbose_name_plural = _('Developers')
 
 	def __unicode__(self):
-        return u'%s' % self.username
+		return u'%s' % self.username
 
 
 class Application(models.Model):
@@ -44,14 +44,12 @@ class Application(models.Model):
 	processed = models.BooleanField()
 	denied = models.BooleanField()
 
-        class Meta:
-            verbose_name = _('Application')
- 
-            verbose_name_plural = _('Applications')
+	class Meta:
+        verbose_name = _('Application')
+ 		verbose_name_plural = _('Applications')
 
-    
-        def __unicode__(self):
-            return u'%s' % self.alias
+    def __unicode__(self):
+    	return u'%s' % self.alias
 
 
     
