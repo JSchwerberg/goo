@@ -15,7 +15,7 @@ class Developer(models.Model):
 	xda = models.CharField(max_length=300)
 	googleplus = models.CharField(max_length=350)
 	email = models.CharField(max_length=250)
-	xda_rd_url = models.CharField(, max_length=50)
+	xda_rd_url = models.CharField(max_length=50)
 	created = models.DateTimeField(auto_now_add=True)
 	status = models.BooleanField()
 	denied = models.BooleanField()
