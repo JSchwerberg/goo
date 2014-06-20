@@ -45,8 +45,8 @@ class Application(models.Model):
 	denied = models.BooleanField()
 
 	class Meta:
-        verbose_name = _('Application')
- 		verbose_name_plural = _('Applications')
+		verbose_name = _('Application')
+		verbose_name_plural = _('Applications')
 
     def __unicode__(self):
     	return u'%s' % self.alias
