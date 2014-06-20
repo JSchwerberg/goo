@@ -48,8 +48,8 @@ class Application(models.Model):
 		verbose_name = _('Application')
 		verbose_name_plural = _('Applications')
 
-    def __unicode__(self):
-    	return u'%s' % self.alias
+	def __unicode__(self):
+		return u'%s' % self.alias
 
 
     
