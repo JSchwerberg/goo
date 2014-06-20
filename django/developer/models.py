@@ -20,11 +20,11 @@ class Developer(models.Model):
 	status = models.BooleanField()
 	denied = models.BooleanField()
     
-    class Meta:
-        verbose_name = _('Developer')
+	class Meta:
+		verbose_name = _('Developer')
         verbose_name_plural = _('Developers')
 
-    def __unicode__(self):
+	def __unicode__(self):
         return u'%s' % self.username
 
 
