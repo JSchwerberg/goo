@@ -8,7 +8,7 @@ class Developer(models.Model):
 	username = models.CharField(max_length=100)
 	password = models.CharField(max_length=200)
 	avatar = models.CharField(max_length=250)
-	avatar_thumb = models.CharField(, max_length=50)
+	avatar_thumb = models.CharField(max_length=50)
 	bio = models.TextField()
 	twitter = models.CharField(max_length=300)
 	rootzwiki = models.CharField(max_length=300)
