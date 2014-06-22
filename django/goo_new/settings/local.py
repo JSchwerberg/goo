@@ -17,3 +17,6 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 API_TOKEN = 'aqb7YPH5zRkpza3oLG2irwFRd6fArHVq'
+
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = "webmaster@junaos.com"

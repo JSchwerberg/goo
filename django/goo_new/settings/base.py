@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'subdomains',
     'api',
+    'paypal.standard.ipn',
+    
 )
 
 MIDDLEWARE_CLASSES = (
