@@ -11,6 +11,9 @@ DATABASES = {
     }
 }
 
+INSTALLED_APPS += (
+	'debug_toolbar',
+)
 
 DEBUG = True
 
