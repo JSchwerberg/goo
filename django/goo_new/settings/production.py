@@ -39,8 +39,10 @@ AUTHENTICATION_BACKENDS= (
 	'django.contrib.auth.backends.ModelBackend',
 )
 
-AUTH_LDAP_SERVER_URI = "ldap://10.0.0.5"
 
+# LDAP Settings
+
+AUTH_LDAP_SERVER_URI = "ldap://10.0.0.5"
 AUTH LDAP_BIND_DN = "cn=admin, dc=goo, dc=im"
 AUTH_LDAP_BIND_PASSWORD = "oxYTznRb14ZxbXpquukNDqTq"
 AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
@@ -48,3 +50,13 @@ AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
 	LDAPSearch("ou=devs,dc=goo,dc=im", ldap.SCOPE_SUBTREE, "(uid=%(user)s)"),
 	LDAPSearch("ou=builders,dc=goo,dc=im", ldap.SCOPE_SUBTREE, "(uid=%(user)s)"),
 )
+
+# Paypal Settings
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_SUBJECT_PREFIX = '[Goo.im] '
+EMAIL_HOST_USER = "contact@snipanet.com"
+EMAIL_HOST_PASSWORD = "wtfhax!!"
