@@ -12,11 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 from unipath import Path
 import os
 BASE_DIR = Path(__file__).ancestor(3)
-<<<<<<< HEAD
 MEDIA_ROOT = BASE_DIR.child("media")
-=======
-MEDIA_ROOT = BASE_DIR.chile("media")
->>>>>>> aafa1420071a61eaaf131565ce362c976b9d9d9c
 STATIC_ROOT = BASE_DIR.child("static")
 STATICFILES_DIRS = (
     BASE_DIR.child("assets"),
