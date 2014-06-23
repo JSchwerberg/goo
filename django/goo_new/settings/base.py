@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'subdomains',
     'api',
     'paypal.standard.ipn',
-    
+    'gunicorn',    
 )
 
 MIDDLEWARE_CLASSES = (
