@@ -27,6 +27,7 @@ class Sponsor(models.Model):
 class AuthKey(models.Model):
 	token = models.CharField(max_length=12)
 	payment_id = models.CharField(max_length=32)
+	email = models.CharField(max_length=50)
 
 def successful_payment(sender, **kwargs):
 	ipn_obj = sender
@@ -34,7 +35,7 @@ def successful_payment(sender, **kwargs):
 	email = ipn_obj.payer_email
 
 	if ipn_obj.payment_status == "Completed":
-		key = AuthKey(token=id_generator(), payment_id=ipn_obj.txn_id)
+		key = AuthKey(token=id_generator(), payment_id=ipn_obj.txn_id, email=email)
 		key.save()
 		message = "Your payment for your sponsor signup has been processed, "
 		message += "and your key is:\n\n"
