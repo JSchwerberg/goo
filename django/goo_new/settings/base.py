@@ -59,6 +59,7 @@ ROOT_URLCONF = 'goo_new.urls.account'
 SUBDOMAIN_URLCONFS = {
     None: 'goo_new.urls.frontend', # no subdomain, e.g. 'goo.im'
     'www': 'goo_new.urls.frontend',
+    'dev': 'goo_new.urls.frontend',
     'api': 'goo_new.urls.api',
     'admin': 'goo_new.urls.admin',
 }
