@@ -72,3 +72,5 @@ EMAIL_HOST_USER = "contact@snipanet.com"
 EMAIL_HOST_PASSWORD = "wtfhax!!"
 
 #WSGI_APPLICATION = 'goo.wsgi.application'
+
+STATIC_URL = 'http://static.junaos.com/'
