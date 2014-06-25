@@ -1,0 +1,74 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from paypal.standard.ipn.signals import payment_was_successful, 
+    payment_was_flagged
+from .generators import id_generator
+
+class Sponsor(models.Model):
+	user = models.OneToOneField(User)
+	payment_id = models.CharField(max_length=32, default="DEVELOPER")
+
+	def activate_sponsor(self, txn_id="DEVELOPER"):
+		u = self.user
+		u.is_active = True
+		self.payment_id = tx_id
+
+	def deactivate_sponsor(self):
+		u.is_active = False
+
+	class Meta:
+		verbose_name = _('Sponsor')
+		verbost_name_plural = _('Sponsors')
+
+	def __unicode__(self):
+		return u'%s' % self.user.username
+
+class AuthKey(models.Model):
+	token = models.CharField(max_length=12)
+	payment_id = models.CharField(max_length=32)
+	email = models.CharField(max_length=50)
+
+def successful_payment(sender, **kwargs):
+	ipn_obj = sender
+	
+	email = ipn_obj.payer_email
+
+	if ipn_obj.payment_status == "Completed":
+		key = AuthKey(token=id_generator(), payment_id=ipn_obj.txn_id, email=email)
+		key.save()
+		message = "Your payment for your sponsor signup has been processed, "
+		message += "and your key is:\n\n"
+		message += key + "\n\n"
+		message += "You can finish your signup by following this link:\n\n"
+		message += "https://goo.im/sponsor_signup?key=%s\n\n" % key
+		message += "If this link doesn't work for you, you can visit " 
+		message += "https://goo.im/sponsor_signup and enter the key manually.\n\n"
+		message += "Thanks for supporting Goo.im!\n\n"
+		message += "-- The Goo.im team"
+
+		send_mail('Finish your sponsor signup', message,
+			'support@snipanet.com', email)
+payment_was_successful.connect(successful_payment)
+
+def flagged_payment(sender, **kwargs):
+	ipn_obj = sender
+
+	email = ipn_obj.payer_email
+
+	message = "Your payment for your Goo.im sponsor signup has been held "
+	message += "for manual processing.  Our admins will look into the issue, "
+	message += "and contact you if we need additional information.  We "
+	message += "apologize for the delay, and will take care of this as soon "
+	message += "as possible.\n\n"
+	message += "-- The Goo.im team"
+	send_mail('Your sponsor signup has been delayed', message,
+		'support@snipanet.com', email)
+
+	admin_message = "A paypal payment has been flagged with the following "
+	admin_message += "error: %s\n\n" % ipn_obj.flag
+	admin_message += "Transaction ID: %s\n" % ipn_obj.txn_id
+	admin_message += "Email Address: %s\n" % ipn_obj.payer_email
+	send_email('Flagged Payment', message,
+		'support@snipanet.com', 'errors@snipanet.com')
+payment_was_flagged.connect(flagged_payment)

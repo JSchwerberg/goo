@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Goo.im - Free Android File Hosting {% endblock %}
+
+{% block content %}
+	{% for post in latest_post %}
+		<h1>{{ post.title }}</h1>
+		<h3>{{ post.body }}</h3>
+{% endfor %}
+{% endblock %}
