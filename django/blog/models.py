@@ -8,6 +8,6 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     body = models.TextField()
     updated = models.BooleanField(default=False)
-    modified = models.DateTimeField(null=True)
+    modified = models.DateTimeField(null=True, blank=True)
     
 

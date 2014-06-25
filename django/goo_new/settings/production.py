@@ -73,4 +73,4 @@ EMAIL_HOST_PASSWORD = "wtfhax!!"
 
 #WSGI_APPLICATION = 'goo.wsgi.application'
 
-STATIC_URL = 'http://static.junaos.com/'
+STATIC_URL = 'https://static.goo.im/'
