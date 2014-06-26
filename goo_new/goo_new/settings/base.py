@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'paypal.standard.ipn',
     'gunicorn',
     'blog',    
+    'sponsor',
 )
 
 MIDDLEWARE_CLASSES = (
