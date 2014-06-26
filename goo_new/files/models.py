@@ -21,7 +21,7 @@ class File(models.Model):
     ro_rom = models.CharField(max_length=65)
     ro_version = models.IntegerField()
     gapps_package = models.IntegerField()
-    incremental_file = models.IntegerField()
+    incremental_file = models.IntegerField(null=True, blank=True)
     filesize = models.BigIntegerField()
     download_count = models.PositiveIntegerField(default=0)
     last_download = models.DateTimeField(auto_now=True)
