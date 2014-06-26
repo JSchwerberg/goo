@@ -1,15 +1,7 @@
 from django.contrib import admin
-from .models import Developer, Application
+from .models import Developer
 
 # Register your models here.
 
-class ApplicationInline(admin.TabularInline):
-	model = Application
-
-class DeveloperAdmin(admin.ModelAdmin):
-	inlines = [
-		ApplicationInline,
-	]
-
-admin.site.register(Developer, DeveloperAdmin)
-admin.site.register(Application)
+admin.site.register(Developer)
+# admin.site.register(Application)
