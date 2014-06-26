@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from unipath import Path
+from unipath import Path 
 import os
 BASE_DIR = Path(__file__).ancestor(3)
 MEDIA_ROOT = BASE_DIR.child("media")
@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'api',
     'south',
+    'configuration',
     'developer',
     'files',
     'rest_framework',
@@ -104,8 +105,13 @@ REST_FRAMEWORK = {
 
 }
 
-CONFIG = config.views.get_config()
-
-TEMPLATE_CONTEXT_PROCESSORS += (
-    "config.context_processors.init_site_settings",
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "configuration.context_processors.init_site_settings",
 )
