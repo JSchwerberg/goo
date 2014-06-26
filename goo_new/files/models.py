@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext as _
+from developer.models import Developer
 
 # Create your models here.
 
@@ -15,7 +16,7 @@ class File(models.Model):
     status = models.SmallIntegerField(default=1)
     additional_info = models.TextField()
     short_url = models.CharField(max_length=32)
-    developer_id = models.IntegerField(default=5)
+    developer_id = models.ForeignKey(Developer)
     ro_developerid = models.CharField(max_length=50)
     ro_board = models.CharField(max_length=50)
     ro_rom = models.CharField(max_length=65)
