@@ -27,6 +27,7 @@ class Developer(models.Model):
 	avatar = models.CharField(max_length=250)
 	avatar_thumb = models.CharField(max_length=50)
 	bio = models.TextField()
+	foldername = models.CharField(max_length=250)
 	twitter = models.CharField(max_length=300)
 	rootzwiki = models.CharField(max_length=300)
 	xda = models.CharField(max_length=300)
