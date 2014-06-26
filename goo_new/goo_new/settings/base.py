@@ -104,5 +104,8 @@ REST_FRAMEWORK = {
 
 }
 
+CONFIG = config.views.get_config()
 
-
+TEMPLATE_CONTEXT_PROCESSORS += (
+    "config.context_processors.init_site_settings",
+)
