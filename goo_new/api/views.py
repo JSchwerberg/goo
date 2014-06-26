@@ -1,13 +1,13 @@
 from django.db.models import Q
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from goo_new.files.models import File
+from files.models import File
 from .serializers import PaginatedFileSerializer, FileSerializer
 
 
-@api_view('GET', 'POST')
+@api_view(['GET', 'POST'])
 def file_list(request):
     """
     List all files in the file index, paginated.  Supports an optional 
@@ -31,7 +31,7 @@ def file_list(request):
 
         # Sort queryset by modified date (descending),  
         # removing any duplicate entries
-        queryset = queryset.order_by('-modified').distinct('id')
+        queryset = queryset.order_by('-modified').distinct()
         
         # Allow API end-users to specify a custom amount of items per page
         items_per_page = request.QUERY_PARAMS.get('items') 
@@ -61,7 +61,7 @@ def file_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Repsonse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 @api_view(['GET', 'PUT', 'DELETE'])
