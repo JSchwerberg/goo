@@ -10,8 +10,8 @@ class Application(models.Model):
 	services = models.CharField(max_length=250)
 	referral = models.CharField(max_length=250)
 	timestamp = models.DateTimeField(auto_now_add=True)
-	processed = models.BooleanField()
-	denied = models.BooleanField()
+	processed = models.BooleanField(default=False)
+	denied = models.BooleanField(default=False)
 
 	class Meta:
 		verbose_name = _('Application')

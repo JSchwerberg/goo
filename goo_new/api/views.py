@@ -91,7 +91,7 @@ def file_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view('GET')
+@api_view(['GET'])
 def developer_file_list(request, dev):
     """
     List files by a given developer
