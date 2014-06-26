@@ -9,7 +9,7 @@ class FileSerializer(serializers.ModelSerializer):
         
         # Only these fields should be exposed by the API /at all/
         fields = ('id', 'filename', 'path', 'folder', 'md5', 'filetype', 'description', 
-        	'is_flashable', 'incremental_file', 'modified', 'ro_developerid', 'ro_board',  
+        	'is_flashable', 'incremental_file', 'modified', 'developer_id', 'ro_developerid', 'ro_board',  
         	'ro_rom', 'ro_version', 'gapps_package', 'filesize', 
         	'download_count', 'last_download' )
 
