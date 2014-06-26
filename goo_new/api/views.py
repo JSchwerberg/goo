@@ -89,3 +89,41 @@ def file_detail(request, pk):
     elif request.method == 'DELETE':
         file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view('GET')
+def developer_file_list(request, dev):
+    """
+    List files by a given developer
+    """
+
+    if request.method == 'GET':
+        # We only want to show items that are 'active'
+        queryset = File.objects.filter(developer__foldername=dev)
+
+        # Sort queryset by modified date (descending),  
+        # removing any duplicate entries
+        queryset = queryset.order_by('-modified').distinct()
+        
+        # Allow API end-users to specify a custom amount of items per page
+        items_per_page = request.QUERY_PARAMS.get('items') 
+        if not items_per_page or not isinstance(items_per_page, int):
+            items_per_page = 10
+
+        paginator = Paginator(queryset, items_per_page)
+        
+        page = request.QUERY_PARAMS.get('page')
+        try:
+            files = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page
+            files = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range
+            # deliver last page of results
+            files = paginator.page(paginator.num_pages)
+
+        serializer_context = {'request': request}
+        serializer = PaginatedFileSerializer(files, context=serializer_context)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
