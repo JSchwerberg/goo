@@ -8,7 +8,7 @@ from fabric.contrib import project
 env.hosts = ['junaos.com']
 env.key_file = ['/home/django/.ssh/id_rsa']
 env.user = 'goostatic'
-env.local_static_root = '/home/django/goo/django/static/'
+env.local_static_root = '/home/django/goo/goo_new/static/'
 env.remote_static_root = '/var/www/goostatic'
 
 def deploy_static():
