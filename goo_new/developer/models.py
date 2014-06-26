@@ -16,7 +16,7 @@ class Developer(models.Model):
     processed = models.BooleanField(default=False)
     denied = models.BooleanField(default=False)
     bio = models.TextField()
-    foldername = models.CharField(max_length=250)
+    foldername = models.CharField(max_length=250, default="")
     twitter = models.CharField(max_length=300)
     rootzwiki = models.CharField(max_length=300)
     xda = models.CharField(max_length=300)
@@ -31,4 +31,4 @@ class Developer(models.Model):
         verbose_name_plural = _('Developers')
 
     def __unicode__(self):
-        return u'%s' % self.username
+        return u'%s' % self.username	
