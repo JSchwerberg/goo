@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from paypal.standard.ipn.signals import payment_was_successful, 
-    payment_was_flagged
+from django.utils.translation import ugettext as _
+from paypal.standard.ipn.signals import payment_was_successful, \
+          payment_was_flagged
 from .generators import id_generator
+
 
 class Sponsor(models.Model):
 	user = models.OneToOneField(User)
@@ -19,7 +21,7 @@ class Sponsor(models.Model):
 
 	class Meta:
 		verbose_name = _('Sponsor')
-		verbost_name_plural = _('Sponsors')
+		verbose_name_plural = _('Sponsors')
 
 	def __unicode__(self):
 		return u'%s' % self.user.username
@@ -49,6 +51,7 @@ def successful_payment(sender, **kwargs):
 
 		send_mail('Finish your sponsor signup', message,
 			'support@snipanet.com', email)
+
 payment_was_successful.connect(successful_payment)
 
 def flagged_payment(sender, **kwargs):
@@ -71,4 +74,5 @@ def flagged_payment(sender, **kwargs):
 	admin_message += "Email Address: %s\n" % ipn_obj.payer_email
 	send_email('Flagged Payment', message,
 		'support@snipanet.com', 'errors@snipanet.com')
+
 payment_was_flagged.connect(flagged_payment)
