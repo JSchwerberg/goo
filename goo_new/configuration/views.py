@@ -1,4 +1,4 @@
-from .models import Config
+from configuration.models import Config
 
 def get_config():
 	queryset = Config.objects.all()
