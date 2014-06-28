@@ -156,7 +156,9 @@ def developer_info(request, path):
             try:
                 duplicate = File.objects.get(developer_path='%s' % path)
             except File.DoesNotExist:
-                serializer.object.developer_id = developer
+                serializer.object.developer = developer
+                if serializer.object.ro_developerid == "":
+                    serializer.object.ro_developerid = serializer.object.developer.username
                 serializer.save()
                 return Response(serializer.data)
             serializer = FileSerializer(duplicate, data=data)
