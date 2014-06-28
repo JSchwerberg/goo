@@ -1,12 +1,14 @@
 import base64
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from files.models import File
 from developer.models import Developer
+from files.modeils import File
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
 from .serializers import DevFileSerializer
 from .authentication import TokenAuthentication
@@ -21,7 +23,7 @@ def file_list(request):
     how many items per page, and a 'page' parameter to get a specific
     page number from the results.
     """
-    
+
     if request.method == 'GET':
         # We only want to show items that are 'active'
         queryset = File.objects.all().filter(status=1)
@@ -150,7 +152,15 @@ def developer_info(request, path):
         serializer = FileSerializer(data=data)
         developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
         if serializer.is_valid():
-            serializer.object.developer_id = developer
-            serializer.save()
-            return Response(serializer.data)
+            try:
+                duplicate = File.objects.get(developer_path='%s' % path)
+            except File.DoesNotExist:
+                serializer.object.developer_id = developer
+                serializer.save()
+                return Response(serializer.data)
+            serializer = FileSerializer(duplicate, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
