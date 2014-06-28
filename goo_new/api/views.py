@@ -21,6 +21,7 @@ def file_list(request):
     how many items per page, and a 'page' parameter to get a specific
     page number from the results.
     """
+    
     if request.method == 'GET':
         # We only want to show items that are 'active'
         queryset = File.objects.all().filter(status=1)
