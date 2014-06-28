@@ -16,28 +16,10 @@ DATABASES = {
         'NAME': 'goo',
         'USER': 'goo',
         'PASSWORD': 'HvRxuZe935kzQZqtR2ovqwBP',
-        'HOST': '10.0.0.8',
-        'PORT': '3306',
-    },
-    'master': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'goo',
-        'USER': 'goo',
-        'PASSWORD': 'HvRxuZe935kzQZqtR2ovqwBP',
-        'HOST': '10.0.0.8',
-        'PORT': '3306',
-    },
-    'slave': {
-    	'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'goo',
-        'USER': 'goo',
-        'PASSWORD': 'HvRxuZe935kzQZqtR2ovqwBP',
-        'HOST': '10.0.0.9',
+        'HOST': 'intlb.goo.im',
         'PORT': '3306',
     }
 }
-
-DATABASE_ROUTERS = ['goo_new.routers.MasterSlaveRouter']
 
 PAYPAL_RECEIVER_EMAIL = "basnipa@gmail.com"
 

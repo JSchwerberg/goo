@@ -23,7 +23,7 @@ TEMPLATE_DIRS = (
 
 ALLOWED_HOSTS = []
 
-SITE_ID = 1
+SITE_ID = 6
 
 # Application definition
 
