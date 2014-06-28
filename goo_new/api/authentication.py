@@ -4,7 +4,7 @@ from rest_framework import exceptions
 
 class TokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        token = request.META.get('HTTP_TOKEN')
+        token = request.META.get('HTTP_Token')
         if token != 'aqb7YPH5zRkpza3oLG2irwFRd6fArHVq':
             return None
 

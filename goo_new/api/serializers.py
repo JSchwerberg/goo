@@ -20,9 +20,13 @@ class FileSerializer(serializers.ModelSerializer):
         # API should not be modifying download_count or last_download
         read_only_fields = ['download_count', 'last_download']
 
+class DevFileSerializer(serializers.ModelSerializer)
+    class Meta:
+        model = File
+        fields = ('md5', 'path')
+
 class DeveloperSerializer(serializers.ModelSerializer):
     files = serializers.RelatedField(many=True)
-
     class Meta:
         model = Developer
         fields = ('id', 'developer_path', 'username')
