@@ -1,5 +1,5 @@
-from goo_new.settings.base import CONFIG
+from .views import get_config
 
 def init_site_settings(request):
-	return settings.CONFIG
+	return get_config()
 
