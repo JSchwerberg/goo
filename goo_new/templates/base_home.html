@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="active"><a href="#">Home</a></li>
+				<li><a href="#">Blog</a></li>
+				<li><a href="#">FAQs</a></li>
+				<li><a href="#">Developers</a></li>
+			</ul>
+
+			{% for post in latest_post %}
+				<h1>{{ post.title }}</h1>
+				<h3>{{ post.body }}</h3>
+			{% endfor %}
+{% endblock %}
