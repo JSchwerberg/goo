@@ -26,7 +26,7 @@ class DevFileSerializer(serializers.ModelSerializer):
         fields = ('md5', 'path')
 
 class DeveloperSerializer(serializers.ModelSerializer):
-    files = serializers.RelatedField(many=True)
+    files = DevFileSerializer(many=True)
     class Meta:
         model = Developer
         fields = ('id', 'developer_path', 'username')
