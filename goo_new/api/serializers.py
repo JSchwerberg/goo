@@ -35,3 +35,9 @@ class DeveloperSerializer(serializers.ModelSerializer):
 class PaginatedFileSerializer(PaginationSerializer):
 	class Meta:
 		object_serializer_class = FileSerializer
+
+class GappsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = ('id')
+

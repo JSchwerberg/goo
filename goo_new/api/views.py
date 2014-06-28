@@ -10,7 +10,7 @@ from files.models import File
 from developer.models import Developer
 from files.models import File
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
-from .serializers import DevFileSerializer
+from .serializers import DevFileSerializer, GappsSerializer
 from .authentication import TokenAuthentication
 
 
@@ -165,3 +165,23 @@ def developer_info(request, path):
                 return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes((IsAuthenticated, ))
+def latest_ics(request):
+    if request.method == 'GET':
+        query = Files.objects.filter(ro_developerid='gapps', 
+                ro_rom='ICS').order_by('-ro_version')[0:1]
+        serializer = GappsSerializer(query)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes((IsAuthenticated, ))
+def latest_jb(request):
+    if request.method == 'GET':
+        query = Files.objects.filter(ro_developerid='gapps', 
+                ro_rom='JB').order_by('-ro_version')[0:1]
+        serializer = GappsSerializer(query)
+        return Response(serializer.data, status=status.HTTP_200_OK)
