@@ -55,4 +55,11 @@ EMAIL_HOST_PASSWORD = "wtfhax!!"
 
 #WSGI_APPLICATION = 'goo.wsgi.application'
 
-STATIC_URL = 'https://static.goo.im/'
+STATIC_URL = 'https://d1vynbeceyk9dd.cloudfront.net/'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'intlb.goo.im:11211',
+    }
+}
