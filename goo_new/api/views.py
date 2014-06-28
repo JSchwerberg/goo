@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from files.models import File
 from developer.models import Developer
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
@@ -136,6 +137,7 @@ def developer_file_list(request, dev):
 
 @api_view(['GET', 'POST'])
 @authentication_classes(TokenAuthentication)
+@permission_classes((IsAuthenticated, ))
 def developer_info(request, path):
     if request.method == 'GET':
         queryset = Developer.objects.filter(developer_path__contains='/devs/%s' % path)
