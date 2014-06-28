@@ -10,6 +10,6 @@
 
 			{% for post in latest_post %}
 				<h2><a href="#">{{ post.title }}</a></h2>
-				<h4>{{ post.body }}</h4>
+				<h4>{{ post.body|linebreaks }}</h4>
 			{% endfor %}
 {% endblock %}
