@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated
 from files.models import File
 from developer.models import Developer
-from files.modeils import File
+from files.models import File
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
 from .serializers import DevFileSerializer
 from .authentication import TokenAuthentication
@@ -139,6 +139,7 @@ def developer_file_list(request, dev):
 
 
 @api_view(['GET', 'POST'])
+@authentication_classes((TokenAuthentication, ))
 @permission_classes((IsAuthenticated, ))
 def developer_info(request, path):
     if request.method == 'GET':
