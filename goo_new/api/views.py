@@ -1,3 +1,4 @@
+import base64
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework import status
@@ -6,6 +7,8 @@ from rest_framework.decorators import api_view
 from files.models import File
 from developer.models import Developer
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
+from .serializers import DeveloperFileSerializer
+from .authentication import TokenAuthentication
 
 
 @api_view(['GET', 'POST'])
@@ -130,9 +133,22 @@ def developer_file_list(request, dev):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
 @api_view(['GET', 'POST'])
+@authentication_classes(TokenAuthentication)
 def developer_info(request, path):
     if request.method == 'GET':
         queryset = Developer.objects.filter(developer_path__contains='/devs/%s' % path)
         serializer = DeveloperSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if request.method == 'POST':
+        encoded_data = request.META.get('HTTP_Data')
+        data = base64.b64decode(encoded_data)
+        serializer = FileSerializer(data=data)
+        developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
+        if serializer.is_valid():
+            serializer.object.developer_id = developer
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
