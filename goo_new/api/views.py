@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from files.models import File
 from developer.models import Developer
-from .serializers import PaginatedFileSerializer, FileSerializer
+from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -133,5 +133,6 @@ def developer_file_list(request, dev):
 @api_view(['GET', 'POST'])
 def developer_info(request, path):
     if request.method == 'GET':
-        queryset = Developer.objects.filter(developer__path__icontains='/devs/%s' % path)
-        
+        queryset = Developer.objects.filter(developer_path__contains='/devs/%s' % path)
+        serializer = DeveloperSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)

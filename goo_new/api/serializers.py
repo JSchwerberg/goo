@@ -2,6 +2,7 @@ from django.forms import widgets
 from rest_framework.pagination import PaginationSerializer
 from rest_framework import serializers
 from files.models import File
+from developer.models import Developer
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
