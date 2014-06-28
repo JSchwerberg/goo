@@ -29,7 +29,7 @@ class DeveloperSerializer(serializers.ModelSerializer):
     files = DevFileSerializer(many=True)
     class Meta:
         model = Developer
-        fields = ('id', 'developer_path', 'username')
+        fields = ()
 
 
 class PaginatedFileSerializer(PaginationSerializer):
