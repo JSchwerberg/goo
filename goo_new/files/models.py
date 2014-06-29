@@ -16,7 +16,7 @@ class File(models.Model):
     status = models.SmallIntegerField(default=1)
     additional_info = models.TextField()
     short_url = models.CharField(max_length=32)
-    developer = models.ForeignKey(Developer, null=True, blank=True)
+    developer = models.ForeignKey(Developer, null=True, blank=True, related_name="files")
     ro_developerid = models.CharField(max_length=50, blank=True)
     ro_board = models.CharField(max_length=50, blank=True)
     ro_rom = models.CharField(max_length=65, blank=True)
@@ -30,6 +30,8 @@ class File(models.Model):
     class Meta:
         verbose_name = _('File')
         verbose_name_plural = _('Files')
+        unique_together = ("path", "filename")
+
 
     def __unicode__(self):
         return u'%s' % self.path
