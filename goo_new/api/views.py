@@ -148,7 +148,7 @@ def developer_info(request, path):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     if request.method == 'POST':
-        encoded_data = request.META.get('HTTP_Data')
+        encoded_data = request.META.get('HTTP_DATA')
         data = base64.b64decode(encoded_data)
         serializer = FileSerializer(data=data)
         developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
