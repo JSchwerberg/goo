@@ -29,7 +29,7 @@ class DeveloperSerializer(serializers.ModelSerializer):
     files = DevFileSerializer(many=True)
     class Meta:
         model = Developer
-        fields = ()
+        fields = ('files',)
 
 
 class PaginatedFileSerializer(PaginationSerializer):
@@ -39,5 +39,5 @@ class PaginatedFileSerializer(PaginationSerializer):
 class GappsSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ('id')
+        fields = ('id',)
 

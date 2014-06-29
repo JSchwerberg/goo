@@ -74,15 +74,23 @@ def file_list(request):
     
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def file_detail(request, pk):
+def file_detail(request, pk=None, path=None):
     """
     Retrieve, update, or delete a specific file
     """
 
-    try:
-        file = File.objects.get(pk=pk)
-    except File.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    if (pk != None):
+        try:
+            file = File.objects.get(pk=pk)
+        except File.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    elif (path != None):
+        try:
+            file = File.objects.get(path__contains=path)
+        except File.DoesNotExist:  
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'GET':
         serializer = FileSerializer(file)
@@ -149,19 +157,17 @@ def developer_info(request, path):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     if request.method == 'POST':
-<<<<<<< HEAD
-        encoded_data = request.META.get('HTTP_DATA')
-        data = base64.b64decode(encoded_data)
-=======
-        encoded_data = request.META.get('HTTP_Data')
+        post_body = request.body
+        post_data = json.loads(post_body)
+        encoded_data = post_data['Data']
+        print encoded_data
         decoded_data = base64.b64decode(encoded_data)
         data = json.loads(decoded_data)
->>>>>>> aa91ec8cb8458d4345a29d8230afe72e3ab5701d
         serializer = FileSerializer(data=data)
         developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
         if serializer.is_valid():
             try:
-                duplicate = File.objects.get(developer_path='%s' % path)
+                duplicate = File.objects.get(path='%s' % path)
             except File.DoesNotExist:
                 serializer.object.developer = developer
                 if serializer.object.ro_developerid == "":
