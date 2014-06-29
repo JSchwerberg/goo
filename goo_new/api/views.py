@@ -1,4 +1,5 @@
 import base64
+import simplejson as json
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
@@ -149,7 +150,8 @@ def developer_info(request, path):
 
     if request.method == 'POST':
         encoded_data = request.META.get('HTTP_Data')
-        data = base64.b64decode(encoded_data)
+        decoded_data = base64.b64decode(encoded_data)
+        data = json.loads(decoded_data)
         serializer = FileSerializer(data=data)
         developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
         if serializer.is_valid():
