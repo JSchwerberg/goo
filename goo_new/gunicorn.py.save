@@ -1,0 +1,6 @@
+workers = \2
+bind = '10.0.0.12:8080'  # Binds to a unix socket rather than ip/port
+
+def when_ready(server):
+    from django.core.management import call_command
+    call_command('validate')

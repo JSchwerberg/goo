@@ -86,7 +86,7 @@ def file_detail(request, pk=None, path=None):
             return Response(status=status.HTTP_404_NOT_FOUND)
     elif (path != None):
         try:
-            file = File.objects.get(path__contains=path)
+            file = File.objects.get(path__endswith=path)
         except File.DoesNotExist:  
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
@@ -164,7 +164,12 @@ def developer_info(request, path):
         decoded_data = base64.b64decode(encoded_data)
         data = json.loads(decoded_data)
         serializer = FileSerializer(data=data)
-        developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
+        try:
+            developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
+        except Developer.MultipleObjectsReturned:
+            split_string = path.split('/')
+            username = split_string[0]
+            developer = Developer.objects.get(username=username)
         if serializer.is_valid():
             try:
                 duplicate = File.objects.get(path='%s' % path)
