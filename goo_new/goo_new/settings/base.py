@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'raven.contrib.django.raven_compat',
     'api',
     'south',
     'configuration',
@@ -131,3 +132,8 @@ DATETIME_INPUT_FORMATS = (
     '%m/%d/%y',              # '10/25/06'
     '%a, %d %b %Y %H:%M:%S %Z',     # 'Sun, 22 Jan 2014 17:50:02 GMT'
 )
+
+RAVEN_CONFIG = {
+    'dsn': 'https://e0f915efe33441f68cb99c9ba219fecb:3789e8dd63cc48b7bec3b230ace13077@sentry.goo.im/3'
+}
+
