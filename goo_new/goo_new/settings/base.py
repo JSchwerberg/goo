@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'api',
     'south',
     'configuration',
+    'sponsor',
     'developer',
     'files',
     'rest_framework',
