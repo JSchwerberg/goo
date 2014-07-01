@@ -19,6 +19,8 @@ class Sponsor(models.Model):
 	def deactivate_sponsor(self):
 		u.is_active = False
 
+
+
 	class Meta:
 		verbose_name = _('Sponsor')
 		verbose_name_plural = _('Sponsors')
