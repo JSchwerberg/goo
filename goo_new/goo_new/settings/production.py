@@ -63,3 +63,7 @@ CACHES = {
         'LOCATION': 'intlb.goo.im:11211',
     }
 }
+
+SESSION_COOKIE_AGE = 4838400
+SESSION_COOKIE_SECURE = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'

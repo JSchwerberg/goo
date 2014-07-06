@@ -1,0 +1,1 @@
+function countredirect(){return 1==currentsecond?void(window.location=targetURL):(currentsecond-=1,document.getElementById("redirect2").value=currentsecond,void setTimeout("countredirect()",1200))}var targetURL=document.URL,countdownfrom=10,currentsecond=document.getElementById("redirect2").value=countdownfrom+1;countredirect();

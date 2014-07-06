@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'api',
     'south',
     'configuration',
-    'sponsor',
+    #'sponsor',
     'developer',
     'files',
     'rest_framework',
@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'blog',    
     'sponsor',
+    'qrcode',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,6 +114,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
+    "django.core.context_processors.request",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "configuration.context_processors.init_site_settings",

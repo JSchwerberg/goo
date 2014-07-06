@@ -86,9 +86,12 @@ def file_detail(request, pk=None, path=None):
             return Response(status=status.HTTP_404_NOT_FOUND)
     elif (path != None):
         try:
-            file = File.objects.get(path__endswith=path)
+            file = File.objects.get(path=path)
         except File.DoesNotExist:  
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            try:
+                file = File.objects.get(path='/devs/' + path)
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -152,7 +155,7 @@ def developer_file_list(request, dev):
 @permission_classes((IsAuthenticated, ))
 def developer_info(request, path):
     if request.method == 'GET':
-        queryset = Developer.objects.filter(developer_path__contains='/devs/%s' % path)
+        queryset = Developer.objects.filter(developer_path__exact='/devs/%s' % path)
         serializer = DeveloperSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -164,12 +167,18 @@ def developer_info(request, path):
         decoded_data = base64.b64decode(encoded_data)
         data = json.loads(decoded_data)
         serializer = FileSerializer(data=data)
+        split_path = path.split('/')
+        if 'devs' in split_path:
+            split_path.remove('devs')
+
+        devfolder = split_path[0]
+
         try:
-            developer = Developer.objects.get(developer_path__contains='/devs/%s' % path)
-        except Developer.MultipleObjectsReturned:
+            developer = Developer.objects.get(developer_path='/devs/%s' % devfolder)
+        except:
             split_string = path.split('/')
             username = split_string[0]
-            developer = Developer.objects.get(username=username)
+            developer = Developer.objects.get(username=devfolder)
         if serializer.is_valid():
             try:
                 duplicate = File.objects.get(path='%s' % path)
