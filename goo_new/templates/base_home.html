@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
-
 {% block content %}
+            <ul class="nav nav-tabs" role="tablist">
+                <li {% block home %}class="active{% endblock %}"><a href="{% url 'index' %}">Home</a></li>
+                <li {% block blog %}{% endblock %}><a href="#">Blog</a></li>
+                <li {% block faq %}{% endblock %}><a href="#">FAQs</a></li>
+                <li {% block developers %}{% endblock %}><a href="{% url 'developers' %}">Developers</a></li>
+            </ul>
 
-			<ul class="nav nav-tabs" role="tablist">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#">Blog</a></li>
-				<li><a href="#">FAQs</a></li>
-				<li><a href="#">Developers</a></li>
-			</ul>
+{% block data %}
 
-			{% for post in latest_post %}
+           	{% for post in latest_post %}
 				<h2><a href="#">{{ post.title }}</a></h2>
 				<h4>{{ post.body|linebreaks }}</h4>
 			{% endfor %}
+{% endblock %}
 {% endblock %}

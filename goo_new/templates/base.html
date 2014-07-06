@@ -19,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="{% static 'img/gimhead.png' %}" /></a>
+                <a class="navbar-brand" href="/"><img src="{% static 'img/gimhead.png' %}" /></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -40,16 +40,34 @@
         </nav>
 
 
-        <div class="container">
-            {% if adblock %}
+            {% if not request.session.sponsor %}
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-12">            
-                        {{ adblock_code }}
+                    <div class="col-md-8 col-md-offset-2">            
+                        {% autoescape off %}
+                            {{ adblock_code }}
+                        {% endautoescape %}
                     </div>
                 </div>
+            </div>
             {% endif %}
-            {% block content %}
-            {% endblock %}
+            <div class="container" id="content">
+                <div class="well">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+            {% if not request.session.sponsor %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        {% autoescape off %}
+                            {{ adblock_code }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>

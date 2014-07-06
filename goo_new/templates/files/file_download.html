@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<form name="redirect">
+<center>
+<font face="Arial"><b>You will be redirected to {{ path }}  in<br><br>
+<form>
+<input type="text" size="3" id="redirect2">
+</form>
+seconds</b></font>
+</center>
+
+<script src="{% static 'js/countdown.js' %}"></script>
+{% endblock %}
