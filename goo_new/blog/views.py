@@ -9,6 +9,6 @@ class IndexView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(IndexView, self).get_context_data(**kwargs)
-		context['latest_post'] = Post.objects.all()[:1]
+		context['latest_post'] = Post.objects.latest('created')
 		return context
 
