@@ -9,9 +9,8 @@
 
 {% block data %}
 
-           	{% for post in latest_post %}
-				<h2><a href="#">{{ post.title }}</a></h2>
-				<h4>{{ post.body|linebreaks }}</h4>
-			{% endfor %}
+             	<h2><a href="#">{{ latest_post.title }}</a></h2>
+				<h4>{{ latest_post.body|linebreaks }}</h4>
+
 {% endblock %}
 {% endblock %}

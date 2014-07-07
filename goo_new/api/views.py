@@ -166,7 +166,14 @@ def developer_info(request, path):
         print encoded_data
         decoded_data = base64.b64decode(encoded_data)
         data = json.loads(decoded_data)
-        serializer = FileSerializer(data=data)
+        try:
+            duplicate = File.objects.get(path='%s' % data['path'])
+        except:
+            serializer = FileSerializer(data=data)
+        else:
+            serializer = FileSerializer(duplicate, data=data)
+            if serializer.is_valid():
+                serializer.save()
         split_path = path.split('/')
         if 'devs' in split_path:
             split_path.remove('devs')
@@ -179,19 +186,14 @@ def developer_info(request, path):
             split_string = path.split('/')
             username = split_string[0]
             developer = Developer.objects.get(username=devfolder)
+
         if serializer.is_valid():
-            try:
-                duplicate = File.objects.get(path='%s' % path)
-            except File.DoesNotExist:
-                serializer.object.developer = developer
-                if serializer.object.ro_developerid == "":
-                    serializer.object.ro_developerid = serializer.object.developer.username
-                serializer.save()
-                return Response(serializer.data)
-            serializer = FileSerializer(duplicate, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+            serializer.object.developer = developer
+            if serializer.object.ro_developerid == "":
+                serializer.object.ro_developerid = serializer.object.developer.username
+            serializer.save()
+            return Response(serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])

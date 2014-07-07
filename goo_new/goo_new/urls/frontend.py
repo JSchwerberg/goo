@@ -8,7 +8,8 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'goo_new.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    
+
+    url(r'^sponsor/', include('sponsor.urls')),    
     url(r'^devs/', include('files.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', IndexView.as_view(), name='index'),

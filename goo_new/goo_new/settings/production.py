@@ -67,3 +67,8 @@ CACHES = {
 SESSION_COOKIE_AGE = 4838400
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+GAPPS_KEY = "93heq298unrf312890h"
+
+CSRF_COOKIE_DOMAIN = ".goo.im"
+CSRF_COOKIE_SECURE = True

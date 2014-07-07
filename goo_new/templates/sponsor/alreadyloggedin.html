@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <h2>You are already logged in, {{ request.session.sponsor }}.  <a href="{% url 'sponsor_logout' %}">Click here</a> to log out</h2>
+    </div>
+{% endblock %}

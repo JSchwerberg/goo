@@ -1,12 +1,14 @@
 import time
 import hashlib
+import re
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import File
+from .models import File, BlacklistKeyword
 from developer.models import Developer
 from .helpers import get_next_folders
 
-SECRET_KEY = "93heq298unrf312890h"
+SECRET_KEY = settings.GAPPS_KEY
 
 def file_download(request):
     
@@ -40,9 +42,16 @@ def file_list(request, cur_path=''):
 
     if cur_path == '/devs':
         folder_qs = Developer.objects.order_by('developer_path')
-        paginator = Paginator(folder_qs, 50)
         page = request.GET.get('page')
 
+        folder_list = []
+        for obj in folder_qs:
+            folder_list.append(obj.developer_path[6:])
+
+        folder_list = sorted(folder_list)
+
+        paginator = Paginator(folder_list, 50)
+        
         try:
             folders = paginator.page(page)
         except PageNotAnInteger:
@@ -50,11 +59,9 @@ def file_list(request, cur_path=''):
         except EmptyPage:
             folders = paginator.page(paginator.num_pages)
 
-        folder_list = []
-        for obj in folders:
-            folder_list.append(obj.developer_path[6:])
+
         breadcrumbs = [['devs', '/devs']]
-        return render(request, 'files/file_list.html', {"folders": sorted(folder_list), "breadcrumbs": breadcrumbs})
+        return render(request, 'files/file_list.html', {"folders": folders, "breadcrumbs": breadcrumbs})
 
     try:
         query = File.objects.get(path=cur_path)
@@ -65,7 +72,19 @@ def file_list(request, cur_path=''):
         return file_download(request)
 		
     # List of all the files in the folder
-    qs = File.objects.filter(folder=cur_path).order_by('filename')
+
+    blacklist = BlacklistKeyword.objects.filter(status=1)
+
+    exclude = []
+    for word in blacklist:
+        inner_qs = File.objects.filter(path__icontains=word.keyword)
+        for result in inner_qs:
+            exclude.append(result.id)
+
+    
+    qs = File.objects.filter(folder=cur_path).exclude(id__in=exclude).order_by('filename')
+
+
     paginator = Paginator(qs, 50)
 
     page = request.GET.get('page')

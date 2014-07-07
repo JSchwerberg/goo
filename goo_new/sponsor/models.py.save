@@ -11,18 +11,17 @@ class Sponsor(models.Model):
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=64)
     created = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=True)
-    salt = models.CharField(max_length=64)
-    payment_id = models.CharField(max_length=32, default="DEVELOPER")
-    email = models.CharField(max_length=100)
-    migrated = models.BooleanField(default=True)
+    status = models.BooleanField(default=True
+	payment_id = models.CharField(max_length=32, default="DEVELOPER")
 
-    def activate_sponsor(self, txn_id):
-        self.status = True
-        self.payment_id = txn_id
+	def activate_sponsor(self, txn_id="DEVELOPER"):
+		u = self.user
+		u.is_active = True
+		self.payment_id = tx_id
 
 	def deactivate_sponsor(self):
-		self.status = False
+		u.is_active = False
+
 
 
 	class Meta:
@@ -30,7 +29,7 @@ class Sponsor(models.Model):
 		verbose_name_plural = _('Sponsors')
 
 	def __unicode__(self):
-		return u'%s' % self.username
+		return u'%s' % self.user.username
 
 class AuthKey(models.Model):
 	token = models.CharField(max_length=12)
