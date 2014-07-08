@@ -58,7 +58,7 @@ def successful_payment(sender, **kwargs):
     message += "Thanks for supporting Goo.im!\n\n"
     message += "-- The Goo.im team"
     send_mail('Finish your sponsor signup', message,
-			'support@snipanet.com', [email], html_message=message)
+			'support@snipanet.com', [email])
 
 payment_was_successful.connect(successful_payment)
 
@@ -74,7 +74,7 @@ def flagged_payment(sender, **kwargs):
 	message += "as possible.\n\n"
 	message += "-- The Goo.im team"
 	send_mail('Your sponsor signup has been delayed', message,
-		'support@snipanet.com', [email], html_message=message)
+		'support@snipanet.com', [email])
 
 	admin_message = "A paypal payment has been flagged with the following "
 	admin_message += "error: %s\n\n" % ipn_obj.flag
@@ -138,5 +138,5 @@ def reversed_payment(sender, **kwargs):
 
 
 
-payment_was_reversed.connect(refunded_payment)
+payment_was_reversed.connect(reversed_payment)
 
