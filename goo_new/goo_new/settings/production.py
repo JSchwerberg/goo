@@ -50,8 +50,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Goo.im] '
-EMAIL_HOST_USER = "contact@snipanet.com"
-EMAIL_HOST_PASSWORD = "wtfhax!!"
+EMAIL_HOST_USER = "support@snipanet.com"
+EMAIL_HOST_PASSWORD = "eU1kct%%Wpn%&^r"
 
 #WSGI_APPLICATION = 'goo.wsgi.application'
 

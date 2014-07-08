@@ -38,26 +38,28 @@ class AuthKey(models.Model):
 	payment_id = models.CharField(max_length=32)
 	email = models.CharField(max_length=50)
 
+
 def successful_payment(sender, **kwargs):
     ipn_obj = sender
 
     email = ipn_obj.payer_email
 
     key = AuthKey(token=id_generator(), payment_id=ipn_obj.txn_id, email=email)
-    key.save()
-    message = "Your payment for your sponsor signup has been processed, "
-    message += "and your key is:\n\n"
-    message += key.token + "\n\n"
-    message += "You can finish your signup by following this link:\n\n"
-    message += '<a href="https://goo.im/sponsor/auth/?token=%s">https://goo.im/sponsor/auth/?token=%s\n\n</a>' % (key.token, key.token)
-    message += "If this link doesn't work for you, you can visit " 
-    message += "https://goo.im/sponsor_signup and enter the key manually.\n\n"
-    message += "Thanks for supporting Goo.im!\n\n"
-    message += "-- The Goo.im team"
-    send_mail('Finish your sponsor signup', message,
-			'support@snipanet.com', [email], html_message=message)
+	key.save()
+	message = "Your payment for your sponsor signup has been processed, "
+	message += "and your key is:\n\n"
+	message += key + "\n\n"
+	message += "You can finish your signup by following this link:\n\n"
+	message += "https://goo.im/sponsor_signup?key=%s\n\n" % key
+	message += "If this link doesn't work for you, you can visit " 
+	message += "https://goo.im/sponsor_signup and enter the key manually.\n\n"
+	message += "Thanks for supporting Goo.im!\n\n"
+	message += "-- The Goo.im team"
+	send_mail('Finish your sponsor signup', message,
+			'support@snipanet.com', [email])
 
 payment_was_successful.connect(successful_payment)
+
 
 def flagged_payment(sender, **kwargs):
 	ipn_obj = sender
@@ -71,7 +73,7 @@ def flagged_payment(sender, **kwargs):
 	message += "as possible.\n\n"
 	message += "-- The Goo.im team"
 	send_mail('Your sponsor signup has been delayed', message,
-		'support@snipanet.com', [email], html_message=message)
+		'support@snipanet.com', [email])
 
 	admin_message = "A paypal payment has been flagged with the following "
 	admin_message += "error: %s\n\n" % ipn_obj.flag
@@ -81,6 +83,7 @@ def flagged_payment(sender, **kwargs):
 		'support@snipanet.com', ['errors@snipanet.com'])
 
 payment_was_flagged.connect(flagged_payment)
+
 
 def refunded_payment(sender, **kwargs):
 

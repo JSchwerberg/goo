@@ -8,7 +8,7 @@
         {% endfor %}
     {% endif %}
     <div class="row">
-        <h2 style="text-align:center">Sponsor Login</h2>
+        <h2 style="text-align:center">Sponsor Signup</h2>
     <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <form action="" method ="post">{% csrf_token %}
@@ -17,12 +17,6 @@
         </form>
     </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <h3>Not a sponsor yet? <a href="{% url 'sponsor_signup' %}">Click here</a> to sign up and receive ad-free usage, and no wait times on downloads!</h3>
-        </div>
-    </div>
-    
+
 {% endblock %}
 
