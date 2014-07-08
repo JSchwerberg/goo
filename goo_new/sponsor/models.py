@@ -22,21 +22,24 @@ class Sponsor(models.Model):
         self.status = True
         self.payment_id = txn_id
 
-	def deactivate_sponsor(self):
-		self.status = False
+    def deactivate_sponsor(self):
+        self.status = False
 
 
-	class Meta:
-		verbose_name = _('Sponsor')
-		verbose_name_plural = _('Sponsors')
+    class Meta:
+        verbose_name = _('Sponsor')
+        verbose_name_plural = _('Sponsors')
 
-	def __unicode__(self):
-		return u'%s' % self.username
+    def __unicode__(self):
+        return u'%s' % self.username
 
 class AuthKey(models.Model):
-	token = models.CharField(max_length=12)
-	payment_id = models.CharField(max_length=32)
-	email = models.CharField(max_length=50)
+    token = models.CharField(max_length=12)
+    payment_id = models.CharField(max_length=32)
+    email = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return u'%s' % self.email
 
 def successful_payment(sender, **kwargs):
     ipn_obj = sender
