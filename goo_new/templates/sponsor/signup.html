@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="text-align:center;">Goo Sponsor Signup</h2>
+            <p>If you wish to donate to keep Goo.im running, simply click the donate button below.  Current sponsor benefits are:</p>
+            <ul>
+                <li>All ads removed from site</li>
+                <li>No wait time for downloads</li>
+            </ul>
+            <p>Click below to continue</p>
+        </div>
+
+
+        <div class="col-md-2 col-md-offset-5">
+    {{ form.render }}
+        </div>
+    </div>
+{% endblock %}
