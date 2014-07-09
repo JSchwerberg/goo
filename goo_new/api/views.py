@@ -223,7 +223,7 @@ def install_command_view(request, device):
     if request.method == 'GET':
         try:
             query = InstallCommand.objects.get(device=device)
-        except InstallCommand.ObjectDoesNotExist:
+        except InstallCommand.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = InstallCommandSerializer(query)
