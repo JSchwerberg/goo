@@ -21,7 +21,7 @@ DATABASES = {
     }
 }
 
-PAYPAL_RECEIVER_EMAIL = "webmaster@junaos.com"
+PAYPAL_RECEIVER_EMAIL = "basnipa@gmail.com"
 
 API_TOKEN = 'nQPfNiMESUdw2SfbRVUNc07TN7UvFsNn'
 
@@ -73,4 +73,3 @@ GAPPS_KEY = "93heq298unrf312890h"
 CSRF_COOKIE_DOMAIN = ".goo.im"
 CSRF_COOKIE_SECURE = True
 
-PAYPAL_TEST=True
