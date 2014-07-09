@@ -139,6 +139,7 @@ DATETIME_INPUT_FORMATS = (
 )
 
 RAVEN_CONFIG = {
-    'dsn': 'https://e0f915efe33441f68cb99c9ba219fecb:3789e8dd63cc48b7bec3b230ace13077@sentry.goo.im/3'
+    # 'dsn': 'https://e0f915efe33441f68cb99c9ba219fecb:3789e8dd63cc48b7bec3b230ace13077@sentry.goo.im/3'
+    'dsn': 'https://0769f8c2390542e9935209756ccc6c63:8068726a9c944b86a7faa1f46c8876fc@app.getsentry.com/27189'
 }
 

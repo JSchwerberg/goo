@@ -17,7 +17,7 @@ from .authentication import TokenAuthentication
 
 
 @api_view(['GET', 'POST'])
-def file_list(request):
+def file_list(request, folder=None):
     """
     List all files in the file index, paginated.  Supports an optional 
     'search' query parameter, that filters the results by the search terms,
@@ -28,7 +28,13 @@ def file_list(request):
 
     if request.method == 'GET':
         # We only want to show items that are 'active'
-        queryset = File.objects.all().filter(status=1)
+        if path == None:
+            queryset = File.objects.all().filter(status=1)
+        else:
+            try:
+                queryset = File.objects.all().filter(status=1, folder=path)
+            except:
+                return file_detail(request, path=folder)
 
         # Set optional search terms
         search_terms = request.QUERY_PARAMS.get('search')
