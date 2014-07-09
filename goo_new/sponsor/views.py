@@ -87,7 +87,7 @@ def complete_signup(request):
             txn_id = auth_instance.payment_id
             email = auth_instance.email
 
-            new_sponsor = Sponsor(username=username, password=s_password, salt=s_salt, email=email)
+            new_sponsor = Sponsor(username=username, password=s_password, salt=s_salt, email=email, payment_id=auth_instance.payment_id)
             new_sponsor.save()
             auth_instance.delete()
             request.session['sponsor'] = username
