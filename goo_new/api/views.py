@@ -10,8 +10,9 @@ from rest_framework.permissions import IsAuthenticated
 from files.models import File
 from developer.models import Developer
 from files.models import File
+from recovery.models import InstallCommand
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
-from .serializers import DevFileSerializer, GappsSerializer
+from .serializers import DevFileSerializer, GappsSerializer, InstallCommandSerializer
 from .authentication import TokenAuthentication
 
 
@@ -216,3 +217,13 @@ def latest_jb(request):
                 ro_rom='JB').order_by('-ro_version')[0:1]
         serializer = GappsSerializer(query)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+def install_command_view(request, device):
+    if request.method == 'GET':
+        try:
+            query = InstallCommand.objects.get(device=device)
+        except InstallCommand.ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = InstallCommandSerializer(query)
+        return Response(serializer.data, status=status.HTTP_200_OK)        

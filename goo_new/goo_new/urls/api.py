@@ -9,6 +9,7 @@ urlpatterns =  patterns('',
 #   url(r'^files/(?P<pk>\d+)/$', 'api.views.file_detail', name='file_detail'),
     url(r'^files/devs/(?P<path>.*)$', 'api.views.file_detail', name='file_detail'),
     url(r'^files/', 'api.views.file_list', name='file_list'),
+    url(r'^install_command/(?P<device>\w+)/$', 'api.views.install_command_view', name='install_command'),
     url(r'^admin/devs/(?P<path>.*?)/$', 'api.views.developer_info', name='developer_info'),
     url(r'^admin/ics/$', 'api.views.latest_ics', name='latest_ics'),
     url(r'^admin/jb/$', 'api.views.latest_jb', name='latest_jb')
