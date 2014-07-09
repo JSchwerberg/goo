@@ -5,7 +5,7 @@ from files.models import File
 from developer.models import Developer
 from recovery.models import InstallCommand
 
-class InstallCommandSerailizer(serializers.ModelSerializer):
+class InstallCommandSerializer(serializers.ModelSerializer):
     class Meta:
         model = InstallCommand
     
