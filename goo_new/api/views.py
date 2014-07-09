@@ -28,7 +28,7 @@ def file_list(request, folder=None):
 
     if request.method == 'GET':
         # We only want to show items that are 'active'
-        if path == None:
+        if folder == None:
             queryset = File.objects.all().filter(status=1)
         else:
             try:
