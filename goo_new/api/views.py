@@ -218,6 +218,7 @@ def latest_jb(request):
         serializer = GappsSerializer(query)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
 def install_command_view(request, device):
     if request.method == 'GET':
         try:
