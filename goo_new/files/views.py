@@ -82,7 +82,7 @@ def file_list(request, cur_path=''):
             exclude.append(result.id)
 
     
-    qs = File.objects.filter(folder=cur_path).exclude(id__in=exclude).order_by('filename')
+    qs = File.objects.filter(folder=cur_path).exclude(id__in=exclude).extra(select={'lower_file': 'lower(filename)'}).order_by('lower_file')
 
 
     paginator = Paginator(qs, 50)
