@@ -66,6 +66,17 @@
                 </div>
             </div>
             {% if not request.session.sponsor %}
+            {% block sponsorad %}
+            <div class="container" id="sponsorad">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                        {{ sponsorad }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
