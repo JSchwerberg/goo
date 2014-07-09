@@ -31,8 +31,10 @@ def file_list(request, folder=None):
         if folder == None:
             queryset = File.objects.all().filter(status=1)
         else:
+            if folder[-1] == '/':
+                folder = folder[:-1]
             try:
-                queryset = File.objects.all().filter(status=1, folder=folder)
+                queryset = File.objects.all().filter(status=1, folder='/' + folder)
             except:
                 return file_detail(request, path=folder)
 
