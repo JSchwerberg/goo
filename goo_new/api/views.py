@@ -32,7 +32,7 @@ def file_list(request, folder=None):
             queryset = File.objects.all().filter(status=1)
         else:
             try:
-                queryset = File.objects.all().filter(status=1, folder=path)
+                queryset = File.objects.all().filter(status=1, folder=folder)
             except:
                 return file_detail(request, path=folder)
 
