@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'configuration',
     #'sponsor',
     'developer',
+    'recovery',
     'files',
     'rest_framework',
     'subdomains',

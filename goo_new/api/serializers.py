@@ -3,6 +3,15 @@ from rest_framework.pagination import PaginationSerializer
 from rest_framework import serializers
 from files.models import File
 from developer.models import Developer
+from recovery.models import InstallCommand
+
+class InstallCommandSerailizer(serializers.ModelSerializer):
+    class Meta:
+        model = InstallCommand
+    
+        fields = ('device', 'command')
+
+        write_only_fields = ['device']
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
