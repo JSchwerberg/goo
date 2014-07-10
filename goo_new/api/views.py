@@ -127,8 +127,11 @@ def developer_file_list(request, dev):
     """
 
     if request.method == 'GET':
+        if dev[-1] = '/':
+            dev = dev[:-1]
+
         # We only want to show items that are 'active'
-        queryset = File.objects.filter(developer__developer_pathe='/devs/' + dev).order_by('-modified')
+        queryset = File.objects.filter(developer__developer_path='/devs/' + dev).order_by('-modified')
         
         # Allow API end-users to specify a custom amount of items per page
         items_per_page = request.QUERY_PARAMS.get('items') 
