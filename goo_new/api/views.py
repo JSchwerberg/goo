@@ -128,11 +128,7 @@ def developer_file_list(request, dev):
 
     if request.method == 'GET':
         # We only want to show items that are 'active'
-        queryset = File.objects.filter(developer__foldername=dev)
-
-        # Sort queryset by modified date (descending),  
-        # removing any duplicate entries
-        queryset = queryset.order_by('-modified').distinct()
+        queryset = File.objects.filter(developer__foldername=dev).order_by('-modified')
         
         # Allow API end-users to specify a custom amount of items per page
         items_per_page = request.QUERY_PARAMS.get('items') 
