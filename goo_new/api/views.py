@@ -32,11 +32,13 @@ def file_list(request, folder='/devs'):
         if folder == None:
             queryset = File.objects.all().filter(status=1)
         else:
+            # Add leading slash to match database
+            folder = '/' + folder
             if folder[-1] == '/':
                 folder = folder[:-1]
-            try:
-                queryset = File.objects.all().filter(status=1, folder='/' + folder)
-            except:
+
+            queryset = File.objects.filter(status=1, folder=folder)
+            if not queryset.exists():
                 return file_detail(request, path=folder)
 
         # Set optional search terms
@@ -73,7 +75,7 @@ def file_list(request, folder='/devs'):
         # serializer_context = {'request': request}
         serializer = FileSerializer(queryset)
 
-        folder_qs = File.objects.filter(folder__startswith='/' + folder + '/')
+        folder_qs = File.objects.filter(folder__startswith=folder + '/')
 
         folder_list = []
         for obj in folder_qs:
@@ -81,7 +83,7 @@ def file_list(request, folder='/devs'):
                 folder_list.append(obj.folder)
 
 
-        folders = get_next_folders('/' + folder, folder_list)
+        folders = get_next_folders(folder, folder_list)
 
         return_dict = { "folders": folders, "files": serializer.data }
         return Response(return_dict, status=status.HTTP_200_OK)
