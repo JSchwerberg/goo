@@ -101,7 +101,7 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_RENDERER_CLASSES': (
-        'drf_toolbox.renderers.json',
+        'drf_toolbox.renderers.json.JSONRenderer',
     ),
     
     'DEFAULT_AUTHENTICATION_CLASSES': (
