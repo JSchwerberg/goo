@@ -127,7 +127,7 @@ def developer_file_list(request, dev):
     """
 
     if request.method == 'GET':
-        if dev[-1] = '/':
+        if dev[-1] == '/':
             dev = dev[:-1]
 
         # We only want to show items that are 'active'
