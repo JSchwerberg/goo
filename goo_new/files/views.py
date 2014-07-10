@@ -48,7 +48,7 @@ def file_list(request, cur_path=''):
         for obj in folder_qs:
             folder_list.append(obj.developer_path[6:])
 
-        folder_list = sorted(folder_list)
+        folder_list = sorted(folder_list, cmp=lambda x,y: cmp(x.lower(), y.lower()))
 
         paginator = Paginator(folder_list, 50)
         
