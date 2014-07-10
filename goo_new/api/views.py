@@ -178,7 +178,7 @@ def developer_file_list(request, dev):
 @permission_classes((IsAuthenticated, ))
 def developer_info(request, path):
     if request.method == 'GET':
-        queryset = Developer.objects.filter(developer_path__exact='/devs/%s' % path)
+        queryset = Developer.objects.filter(developer_path='/devs/%s' % path)
         serializer = DeveloperSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
