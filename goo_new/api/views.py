@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from files.models import File
+from files.helpers import get_next_folders
 from developer.models import Developer
 from files.models import File
 from recovery.models import InstallCommand
@@ -17,7 +18,7 @@ from .authentication import TokenAuthentication
 
 
 @api_view(['GET', 'POST'])
-def file_list(request, folder=None):
+def file_list(request, folder='/devs'):
     """
     List all files in the file index, paginated.  Supports an optional 
     'search' query parameter, that filters the results by the search terms,
@@ -39,40 +40,51 @@ def file_list(request, folder=None):
                 return file_detail(request, path=folder)
 
         # Set optional search terms
-        search_terms = request.QUERY_PARAMS.get('search')
-        if search_terms:
+        # search_terms = request.QUERY_PARAMS.get('search')
+        # if search_terms:
         	# Equivalent to "SELECT * from files WHERE MATCH(files, filename)  
         	# AGAINST (search_terms IN BOOLEAN MODE) OR MATCH(files, description) 
         	# AGAINST (search_terms IN BOOLEAN MODE)"
-        	queryset = queryset.filter(Q(filename__search=search_terms) | 
-        		Q(description__search=search_terms))
+        # 	queryset = queryset.filter(Q(filename__search=search_terms) | 
+        # 		Q(description__search=search_terms))
 
         # Sort queryset by modified date (descending),  
         # removing any duplicate entries
-        queryset = queryset.order_by('-modified').distinct()
+        # queryset = queryset.order_by('-modified').distinct()
         
         # Allow API end-users to specify a custom amount of items per page
-        items_per_page = request.QUERY_PARAMS.get('items') 
-        if not items_per_page or not isinstance(items_per_page, int):
-        	items_per_page = 10
+        # items_per_page = request.QUERY_PARAMS.get('items') 
+        # if not items_per_page or not isinstance(items_per_page, int):
+        # 	items_per_page = 10
 
-    	paginator = Paginator(queryset, items_per_page)
+    	# paginator = Paginator(queryset, items_per_page)
         
-        page = request.QUERY_PARAMS.get('page')
-        try:
-        	files = paginator.page(page)
-        except PageNotAnInteger:
+        # page = request.QUERY_PARAMS.get('page')
+        # try:
+        #	files = paginator.page(page)
+        # except PageNotAnInteger:
         	# If page is not an integer, deliver first page
-        	files = paginator.page(1)
-        except EmptyPage:
+        #	files = paginator.page(1)
+        # except EmptyPage:
         	# If page is out of range
         	# deliver last page of results
-        	files = paginator.page(paginator.num_pages)
+        #	files = paginator.page(paginator.num_pages)
 
-        serializer_context = {'request': request}
-        serializer = PaginatedFileSerializer(files, context=serializer_context)
+        # serializer_context = {'request': request}
+        serializer = FileSerializer(queryset)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        folder_qs = File.objects.filter(folder__startswith='/' + folder + '/')
+
+        folder_list = []
+        for obj in folder_qs:
+            if obj.folder not in folder_list:
+                folder_list.append(obj.folder)
+
+
+        folders = get_next_folders('/' + folder, folder_list)
+
+        return_dict = { "folders": folders, "files": serializer.data }
+        return Response(return_dict, status=status.HTTP_200_OK)
 
     if request.method == 'POST':
         serializer = FileSerializer(data=request.DATA)
@@ -134,27 +146,28 @@ def developer_file_list(request, dev):
         queryset = File.objects.filter(developer__developer_path='/devs/' + dev).order_by('-modified')
         
         # Allow API end-users to specify a custom amount of items per page
-        items_per_page = request.QUERY_PARAMS.get('items') 
-        if not items_per_page or not isinstance(items_per_page, int):
-            items_per_page = 10
+        # items_per_page = request.QUERY_PARAMS.get('items') 
+        # if not items_per_page or not isinstance(items_per_page, int):
+        #     items_per_page = 10
 
-        paginator = Paginator(queryset, items_per_page)
+        # paginator = Paginator(queryset, items_per_page)
         
-        page = request.QUERY_PARAMS.get('page')
-        try:
-            files = paginator.page(page)
-        except PageNotAnInteger:
+        # page = request.QUERY_PARAMS.get('page')
+        # try:
+        #     files = paginator.page(page)
+        # except PageNotAnInteger:
             # If page is not an integer, deliver first page
-            files = paginator.page(1)
-        except EmptyPage:
+        #     files = paginator.page(1)
+        # except EmptyPage:
             # If page is out of range
             # deliver last page of results
-            files = paginator.page(paginator.num_pages)
+        #     files = paginator.page(paginator.num_pages)
 
         serializer_context = {'request': request}
-        serializer = PaginatedFileSerializer(files, context=serializer_context)
+        serializer = FileSerializer(queryset)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return_dict = { "subfolders": [ 'folder1', 'folder2', 'folder3'], "files": serializer.data }
+        return Response(return_dict, status=status.HTTP_200_OK)
 
 
 
