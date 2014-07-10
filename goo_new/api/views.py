@@ -38,7 +38,9 @@ def file_list(request, folder='/devs'):
                 folder = folder[:-1]
 
             queryset = File.objects.filter(status=1, folder=folder)
-            if not queryset.exists():
+            folder_qs = File.objects.filter(folder__startswith=folder + '/')
+
+            if not queryset.exists() and not folder_qs.exists():
                 return file_detail(request, path=folder)
 
         # Set optional search terms
@@ -75,7 +77,7 @@ def file_list(request, folder='/devs'):
         # serializer_context = {'request': request}
         serializer = FileSerializer(queryset)
 
-        folder_qs = File.objects.filter(folder__startswith=folder + '/')
+        # folder_qs = File.objects.filter(folder__startswith=folder + '/')
 
         folder_list = []
         for obj in folder_qs:
