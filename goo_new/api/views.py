@@ -17,6 +17,20 @@ from .serializers import DevFileSerializer, GappsSerializer, InstallCommandSeria
 from .authentication import TokenAuthentication
 
 
+@api_view(['GET'])
+def folder_list(request):
+    folder_list = []
+    folder_qs = Developer.objects.all()
+    for obj in folder_qs:
+        if obj.developer_path not in folder_list:
+            folder_list.append(obj.developer_path)
+
+    folders = get_next_folders('/devs', folder_list)
+    return_dict = { "folders": folders }
+
+    return Response(return_dict, status=status.HTTP_200_OK)
+
+
 @api_view(['GET', 'POST'])
 def file_list(request, folder='/devs'):
     """
