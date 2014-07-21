@@ -83,7 +83,7 @@ def flagged_payment(sender, **kwargs):
 	send_mail('Flagged Payment', message,
 		'support@snipanet.com', ['errors@snipanet.com'])
 
-payment_was_flagged.connect(flagged_payment)
+# payment_was_flagged.connect(flagged_payment)
 
 def refunded_payment(sender, **kwargs):
 
