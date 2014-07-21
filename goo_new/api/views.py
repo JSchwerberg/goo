@@ -31,6 +31,28 @@ def folder_list(request):
     return Response(return_dict, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def file_search_result_list(request, search):
+    
+    if len(search) == 32:
+        try:
+            queryset = File.objects.filter(md5=search)
+        except:
+            pass
+        else:
+            serializer = FileSerializer(queryset)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    try:
+        queryset = File.objects.filter(filename__contains=search)
+    except:
+        return Repsonse(status=status.HTTP_404_NOT_FOUND)
+    else:
+        serializer = FileSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 @api_view(['GET', 'POST'])
 def file_list(request, folder='/devs'):
     """
