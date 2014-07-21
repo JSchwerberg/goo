@@ -5,6 +5,7 @@ urlpatterns =  patterns('',
     # url(r'^oauth2/' include('provider.oauth2.urls', namespace = 'oauth2')),
     # url(r'^$', include('api.urls', namespace='api'))
     # url(r'^files/', 'api.views.file_list', name='file_list'),
+    url(r'^search/(?P<search>.*?)/$', 'api.views.file_search_result_list', name='file_search'),
     url(r'^files/$', 'api.views.folder_list', name='root_folder_list'),
     url(r'^files/devs/$', 'api.views.folder_list'), 
     url(r'^files/dev/(?P<dev>.*?)$', 'api.views.developer_file_list', name='dev_file_list'),
