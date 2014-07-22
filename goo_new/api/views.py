@@ -4,6 +4,7 @@ import simplejson as json
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.cache import cache
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -40,7 +41,10 @@ def login(request):
         pw_correct = check_password(username, password, old=True)
 
     if pw_correct:
-        token = str(uuid.uuid4())
+        token = cache.get("apitoken_%s" % username)
+        if not token:
+            token = str(uuid.uuid4())
+            cache.set("apitoken_%s" % username, token, 2592000)
         return Response({"token": token}, status=status.HTTP_200_OK)
 
     return Response({"errors": "Authorization Failed"}, status=status.HTTP_404_NOT_FOUND)
