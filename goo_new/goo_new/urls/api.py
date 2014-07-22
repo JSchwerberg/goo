@@ -6,6 +6,7 @@ urlpatterns =  patterns('',
     # url(r'^$', include('api.urls', namespace='api'))
     # url(r'^files/', 'api.views.file_list', name='file_list'),
     url(r'^search/(?P<search>.*?)/$', 'api.views.file_search_result_list', name='file_search'),
+    url(r'^login/$', 'api.views.login', name='api_login'),
     url(r'^files/$', 'api.views.folder_list', name='root_folder_list'),
     url(r'^files/devs$', 'api.views.folder_list'),
     url(r'^files/devs/$', 'api.views.folder_list'), 
