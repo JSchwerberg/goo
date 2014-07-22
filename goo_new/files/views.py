@@ -1,22 +1,36 @@
 import time
 import hashlib
 import re
+import simplejson as json
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
 from .models import File, BlacklistKeyword
 from developer.models import Developer
 from .helpers import get_next_folders
 
 SECRET_KEY = settings.GAPPS_KEY
 
+@csrf_exempt
 def file_download(request):
     
+    if request.method == 'POST':
+        post_data = request.body
+        json_data = json.loads(post_data)
+        user = json_data['user']
+        token = json_data['token']
+        
+        if cache.get('apitoken_%s' %user) == 'token':
+            waited = True
+        
+
     path = request.session['file']
     if path[:5] == '/devs':
         path = path[5:]
 
-    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())):
+    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())) or waited:
         expire = int(time.time()) + 2400
         token = hashlib.md5("%s?ttl=%s&pass=%s" % (path, expire, SECRET_KEY))
         token = token.hexdigest()
