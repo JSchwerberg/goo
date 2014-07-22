@@ -1,4 +1,5 @@
 import base64
+import uuid
 import simplejson as json
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -6,7 +7,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from sponsor.models import Sponsor
+from sponsor.helpers import check_password
 from files.models import File
 from files.helpers import get_next_folders
 from developer.models import Developer
@@ -15,6 +18,34 @@ from recovery.models import InstallCommand
 from .serializers import PaginatedFileSerializer, FileSerializer, DeveloperSerializer
 from .serializers import DevFileSerializer, GappsSerializer, InstallCommandSerializer
 from .authentication import TokenAuthentication
+
+
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def login(request):
+    post_data = request.body
+    json_data = json.loads(post_data)
+    username = json_data['user']
+    password = json_data['password']
+
+    try:
+        user = Sponsor.objects.get(username=username)
+    except:
+        return Response({"errors": "Authorization Failed"}, status=status.HTTP_404_NOT_FOUND)
+
+    if user.migrated:
+        salt = user.salt
+        pw_correct = check_password(username, password, salt)
+    else:
+        pw_correct = check_password(username, password, old=True)
+
+    if pw_correct:
+        token = str(uuid.uuid4())
+        return Response({"token": token}, status=status.HTTP_200_OK)
+
+    return Response({"errors": "Authorization Failed"}, status=status.HTTP_404_NOT_FOUND)
+
+    
 
 
 @api_view(['GET'])
