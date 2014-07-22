@@ -44,6 +44,14 @@ def file_list(request, cur_path=''):
         if cache.get('apitoken_%s' % user) == token and token != None:
             request.session['sponsor'] = user
 
+    
+    qd = request.GET
+    if 'user' in qd and 'token' in qd:
+        user = qd['user']
+        token = qd['token']
+        if cache.get('apitoken_%s' % user) == token and token != None:
+            request.session['sponsor'] = user
+
     # Normalize to Database structure with leading '/'
     cur_path = '/devs/' + cur_path
 
