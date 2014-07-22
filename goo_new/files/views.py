@@ -41,7 +41,7 @@ def file_list(request, cur_path=''):
         json_data = json.loads(post_data)
         user = json_data['user']
         token = json_data['token']
-        if cache.get('apitoken_%s' % user) == token and token not None:
+        if cache.get('apitoken_%s' % user) == token and token != None:
             request.session['sponsor'] = user
 
     # Normalize to Database structure with leading '/'
