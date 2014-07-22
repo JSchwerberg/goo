@@ -13,24 +13,13 @@ from .helpers import get_next_folders
 
 SECRET_KEY = settings.GAPPS_KEY
 
-@csrf_exempt
 def file_download(request):
     
-    if request.method == 'POST':
-        post_data = request.body
-        json_data = json.loads(post_data)
-        user = json_data['user']
-        token = json_data['token']
-        
-        if cache.get('apitoken_%s' %user) == 'token':
-            waited = True
-        
-
     path = request.session['file']
     if path[:5] == '/devs':
         path = path[5:]
 
-    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())) or waited:
+    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())):
         expire = int(time.time()) + 2400
         token = hashlib.md5("%s?ttl=%s&pass=%s" % (path, expire, SECRET_KEY))
         token = token.hexdigest()
@@ -44,7 +33,16 @@ def file_download(request):
     return render(request, "files/file_download.html", {"path": path})
 
 
+@csrf_exempt
 def file_list(request, cur_path=''):
+
+    if request.method == 'POST':
+        post_data = request.body
+        json_data = json.loads(post_data)
+        user = json_data['user']
+        token = json_data['token']
+        if cache.get('apitoken_%s' % user) == token and token not None:
+            request.session['sponsor'] = user
 
     # Normalize to Database structure with leading '/'
     cur_path = '/devs/' + cur_path
