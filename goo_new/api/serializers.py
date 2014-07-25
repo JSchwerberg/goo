@@ -39,7 +39,7 @@ class FileSerializer(serializers.ModelSerializer):
         	'download_count', 'last_download' )
 
         # Don't show 'filename' or 'folder' in the results -- path will combine these
-        write_only_fields = ['filename', 'folder', 'incremental_file']
+        write_only_fields = ['folder', 'incremental_file']
 
         # API should not be modifying download_count or last_download
         read_only_fields = ['download_count', 'last_download']
