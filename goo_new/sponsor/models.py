@@ -45,19 +45,23 @@ def successful_payment(sender, **kwargs):
     ipn_obj = sender
 
     email = ipn_obj.payer_email
+    item = ipn_obj.item_name
+    gross = ipn_obj.mc_gross
 
-    key = AuthKey(token=id_generator(), payment_id=ipn_obj.txn_id, email=email)
-    key.save()
-    message = "Your payment for your sponsor signup has been processed, "
-    message += "and your key is:\n\n"
-    message += key.token + "\n\n"
-    message += "You can finish your signup by following this link:\n\n"
-    message += '<a href="https://goo.im/sponsor/auth/?token=%s">https://goo.im/sponsor/auth/?token=%s\n\n</a>' % (key.token, key.token)
-    message += "If this link doesn't work for you, you can visit " 
-    message += "https://goo.im/sponsor_signup and enter the key manually.\n\n"
-    message += "Thanks for supporting Goo.im!\n\n"
-    message += "-- The Goo.im team"
-    send_mail('Finish your sponsor signup', message,
+    if item == "Goo.IM Sponsor Account" and gross == 10.00:
+
+        key = AuthKey(token=id_generator(), payment_id=ipn_obj.txn_id, email=email)
+        key.save()
+        message = "Your payment for your sponsor signup has been processed, "
+        message += "and your key is:\n\n"
+        message += key.token + "\n\n"
+        message += "You can finish your signup by following this link:\n\n"
+        message += '<a href="https://goo.im/sponsor/auth/?token=%s">https://goo.im/sponsor/auth/?token=%s\n\n</a>' % (key.token, key.token)
+        message += "If this link doesn't work for you, you can visit " 
+        message += "https://goo.im/sponsor_signup and enter the key manually.\n\n"
+        message += "Thanks for supporting Goo.im!\n\n"
+        message += "-- The Goo.im team"
+        send_mail('Finish your sponsor signup', message,
 			'support@snipanet.com', [email])
 
 payment_was_successful.connect(successful_payment)
