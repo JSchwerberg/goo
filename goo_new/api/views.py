@@ -168,7 +168,7 @@ def file_list(request, folder='/devs'):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
+@authentication_classes((TokenAuthentication, ))
 @api_view(['GET', 'PUT', 'DELETE'])
 def file_detail(request, pk=None, path=None):
     """
