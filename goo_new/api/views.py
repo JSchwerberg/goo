@@ -209,6 +209,8 @@ def file_detail(request, pk=None, path=None):
 
 @api_view(['DELETE'])
 def file_delete(request, path=None):
+    path = '/' + path
+
     try:
         file = File.objects.get(path=path)
     except File.DoesNotExist:
