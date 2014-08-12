@@ -206,6 +206,19 @@ def file_detail(request, pk=None, path=None):
         file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['DELETE'])
+def file_delete(request, path=None):
+    try:
+        file = File.objects.get(path=path)
+    except File.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    except File.MultipleObjectsReturned:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    file.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 @api_view(['GET'])
 def developer_file_list(request, dev):
