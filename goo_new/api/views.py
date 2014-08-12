@@ -206,6 +206,7 @@ def file_detail(request, pk=None, path=None):
         file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['DELETE'])
 def file_delete(request, path=None):
     try:
