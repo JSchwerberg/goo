@@ -96,7 +96,11 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         {% autoescape off %}
-                            {{ adblock_code }}
+                            {% if "/devs/OpenRecovery" in request.path %}
+                                {{ twrp_adblock_code }}
+                            {% else %}
+                                {{ adblock_code }}
+                            {% endif %}
                         {% endautoescape %}
                     </div>
                 </div>
