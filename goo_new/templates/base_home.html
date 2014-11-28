@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}error{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
             <ul class="nav nav-tabs" role="tablist">
                 <li {% block home %}class="active{% endblock %}"><a href="{% url 'index' %}">Home</a></li>
                 <li {% block blog %}{% endblock %}><a href="#">Blog</a></li>

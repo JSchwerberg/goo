@@ -163,3 +163,20 @@ def gapps_list(request):
 def gapps_download(request, path):
     request.session['file'] = '/gapps/' + path
     return file_download(request)
+
+def file_search_result_list(request, search):
+
+    if len(search) == 32:
+        try:
+            files = File.objects.filter(md5=search)
+        except:
+            pass
+        else:
+            return render(request, 'files/search/results.html', {"files": files})
+
+    try: 
+        files = File.objects.filter(filename_contains=search)
+    except:
+        return render(request, 'files/search/results.html', {"files": None})
+    
+    return render(request, 'files/search/results.html', {"files": files})

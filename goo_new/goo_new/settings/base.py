@@ -73,7 +73,7 @@ SUBDOMAIN_URLCONFS = {
     'admin': 'goo_new.urls.admin',
 }
 
-WSGI_APPLICATION = 'goo_new.wsgi.application'
+#WSGI_APPLICATION = 'goo_new.wsgi.application'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
