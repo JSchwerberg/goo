@@ -20,4 +20,4 @@ class PasswordResetRequestForm(forms.Form):
 class PasswordResetForm(forms.Form):
     password = forms.CharField(max_length=64, widget=widgets.PasswordInput)
     confirm_password = forms.CharField(max_length=64, widget=widgets.PasswordInput)
-    sponsor_id = forms.CharField(max_length=12, widget=widgets.HiddenInput)
+    token = forms.CharField(max_length=20, widget=widgets.HiddenInput)

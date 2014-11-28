@@ -192,7 +192,7 @@ def password_reset_view(request):
                 messages.add_message(request, messages.ERROR, 'Could not find your reset request.  Please attempt another password reset, or contact support@snipanet.com for assistance', extra_tags="danger")
                 return redirect('index')
 
-            form = PasswordResetForm(initial={"sponsor_id": sponsor_id})
+            form = PasswordResetForm(initial={"token": token})
             d = {'form': form}
             return render(request, "sponsor/passwordreset.html", d)
             
@@ -201,8 +201,9 @@ def password_reset_view(request):
         if form.is_valid():
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
-            sponsor_id = form.cleaned_data['sponsor_id']
+            token = form.cleaned_data['token']
 
+            sponsor_id = cache.get('reset_%s' % token)
             s = Sponsor.objects.get(id=sponsor_id)
         
             if check_complexity(password) == False:
@@ -214,6 +215,7 @@ def password_reset_view(request):
                 s.migrated = True
                 s.save()
                 messages.add_message(request, messages.SUCCESS, "Your password has been changed! Please login to receive subscriber perks.")
+                cache.delete('reset_%s' % token)
                 return redirect('index')
             else:
                 messages.add_message(request, messages.ERROR, "Your passwords did not match; please try again", extra_tags="danger")
