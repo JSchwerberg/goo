@@ -10,8 +10,6 @@
 
             <ul class="nav nav-tabs" role="tablist">
                 <li {% block home %}class="active{% endblock %}"><a href="{% url 'index' %}">Home</a></li>
-                <li {% block blog %}{% endblock %}><a href="#">Blog</a></li>
-                <li {% block faq %}{% endblock %}><a href="#">FAQs</a></li>
                 <li {% block developers %}{% endblock %}><a href="{% url 'developers' %}">Developers</a></li>
             </ul>
 
