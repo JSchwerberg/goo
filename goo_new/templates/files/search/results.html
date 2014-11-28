@@ -1,11 +1,66 @@
 {% extends 'base_home.html' %}
+{% load qr_tags %}
 {% block home %}{% endblock %}
 {% block blog %}{% endblock %}
 {% block faqs %}{% endblock %}
 {% block developers %}class="active"{% endblock %}
-
+{% block content %}
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h3>Search Results</h3>
         </div>
     </div>
+       <div class="panel-group" id="accordionfiles">
+        {% for obj in files %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <a href="{{obj.path}}">
+                                <span class="glyphicon glyphicon-file"></span>   {{ obj.filename }}
+                                </a>
+                                <a data-toggle="collapse" data-parent="#accordionfiles" href="#collapse{{forloop.counter}}">
+                                    <span class="glyphicon glyphicon-list"></span>
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                {{ obj.modified }}
+                            </div>
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {% qr_from_text "http://goo.im"|add:obj.path "m" %}<br>
+                        Size: {{ obj.filesize }} bytes<br>
+                        MD5: {{ obj.md5 }}<br>
+                        Link: {{ "http://goo.im"|add:obj.path }}<br>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#changelog{{forloop.counter}}">
+                            View Changelog
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        {% for obj in files %}
+            <div class="modal fade" id="changelog{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="changelabel{{forloop.counter}}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="changelabel{{forloop.counter}}">Changelog for {{ obj.filename }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {{ obj.description|linebreaks }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+{% endblock %}
