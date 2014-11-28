@@ -1,0 +1,34 @@
+from django.db import models
+from django.utils.translation import ugettext as _
+
+# Create your models here.
+
+class Developer(models.Model):
+    developer_path = models.CharField(max_length=450, blank=True)
+    username = models.CharField(max_length=100)
+    avatar = models.CharField(max_length=250, blank=True)
+    avatar_thumb = models.CharField(max_length=50, blank=True)
+    alias = models.CharField(max_length=150)
+    releases = models.TextField()
+    services = models.CharField(max_length=250, blank=True)
+    referral = models.CharField(max_length=250, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    processed = models.BooleanField(default=False)
+    denied = models.BooleanField(default=False)
+    bio = models.TextField(blank=True)
+    foldername = models.CharField(max_length=250, default="")
+    twitter = models.CharField(max_length=300, blank=True)
+    rootzwiki = models.CharField(max_length=300, blank=True)
+    xda = models.CharField(max_length=300, blank=True)
+    googleplus = models.CharField(max_length=350, blank=True)
+    email = models.CharField(max_length=250, blank=True)
+    xda_rd_url = models.CharField(max_length=50, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Developer')
+        verbose_name_plural = _('Developers')
+
+    def __unicode__(self):
+        return u'%s' % self.username	

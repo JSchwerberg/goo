@@ -1,0 +1,8 @@
+from .models import Developer
+from django.forms import ModelForm
+
+class ApplicationForm(ModelForm):
+    class Meta:
+        model = Developer
+        exclude = ['developer_path', 'timestamp', 'processed', 'denied', 'foldername',
+                   'status', 'created']
