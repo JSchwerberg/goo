@@ -17,5 +17,5 @@ urlpatterns = patterns('',
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^gapps/$', gapps_list, name='gapps'),
     url(r'^gapps/(?P<path>.*?)/$', gapps_download, name='gapps_download'),
-    url(r'^search/', file_search_result_list),
+    url(r'^search/', file_search_result_list, name='file_search'),
 )

@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'blog',    
     'sponsor',
     'qrcode',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,6 +62,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 )
 
 ROOT_URLCONF = 'goo_new.urls.account'
@@ -143,3 +146,6 @@ RAVEN_CONFIG = {
     'dsn': 'https://0769f8c2390542e9935209756ccc6c63:8068726a9c944b86a7faa1f46c8876fc@app.getsentry.com/27189'
 }
 
+CORS_ORIGIN_WHITELIST = (
+    'd1vynbeceyk9dd.cloudfront.net',
+)

@@ -164,7 +164,9 @@ def gapps_download(request, path):
     request.session['file'] = '/gapps/' + path
     return file_download(request)
 
-def file_search_result_list(request, search):
+def file_search_result_list(request):
+
+    search = request.GET.get('search')
 
     if len(search) == 32:
         try:
@@ -175,7 +177,7 @@ def file_search_result_list(request, search):
             return render(request, 'files/search/results.html', {"files": files})
 
     try: 
-        files = File.objects.filter(filename_contains=search)
+        files = File.objects.filter(filename__contains=search)
     except:
         return render(request, 'files/search/results.html', {"files": None})
     
