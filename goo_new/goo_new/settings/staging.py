@@ -1,5 +1,6 @@
 from .production import *
 
+WSGI_APPLICATION="goo_new.wsgidev.application"
 DEBUG = True
 TEMPLATE_DEBUG = True
 

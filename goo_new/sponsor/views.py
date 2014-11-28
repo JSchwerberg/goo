@@ -1,14 +1,15 @@
+import re
 from paypal.standard.forms import PayPalPaymentsForm
 from django.shortcuts import render, render_to_response, redirect
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from .models import AuthKey, Sponsor
-from .forms import LoginForm, AuthKeyForm, SignupForm
-from .helpers import check_password, hash_password, check_complexity
-
+from .forms import LoginForm, AuthKeyForm, SignupForm, PasswordResetRequestForm, PasswordResetForm
+from .helpers import check_password, hash_password, check_complexity, send_reset_email
 
 def payment(request):
 
@@ -137,4 +138,84 @@ def logout_view(request):
         del request.session['sponsor']
 
     return redirect('index')
+
+def password_reset_request_view(request):
+
+    if request.method == "GET":
+        form = PasswordResetRequestForm
+        return render(request, "sponsor/passwordreset.html", {"form": form})
+
+    if request.method == "POST":
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['username']
+
+        # Try Email First
+        if re.match(r"[^@]+@[^@]+\.[^@]+", query):
+            try:
+                s = Sponsor.objects.get(email=query)
+            except Sponsor.MultipleObjectsReturned:
+                messages.add_message(request, messages.ERROR, 'There are multiple accounts with this email address.  Please use your username, or contact support@snipanet.com for assistance', extra_tage="danger")
+                return HttpResponseRedirect(request.path)
+            except Sponsor.DoesNotExist:
+                messages.add_message(request, messages.ERROR, 'Could not find this email address.  Please try again with your username, or contact support@snipanet.com for assistance', extra_tags="danger")
+                return HttpResponseRedirect(request.path)
+
+        else:
+            try:
+                s = Sponsor.objects.get(username=query)
+            except Sponsor.MultipleObjectsReturned:
+                messages.add_message(request, messages.ERROR, 'There are multiple accounts with this username.  This should not happen!  Please contact support@snipanet.com for assistance.', extra_tags="danger")
+                return HttpResponseRedirect(request.path)
+            except Sponsor.DoesNotExist:
+                messages.add_message(request, messages.ERROR, 'Could not find this username.  Please try again, or contact support@snipanet.com for assistance.', extra_tags="danger")
+                return HttpResponseRedirect(request.path)
+
+        if s.status == False:
+            messages.add_message(request, messages.ERROR, 'Your sponsor account is disabled! Please contact support@snipanet.com for more information.', extra_tags="danger")
+            return HttpResponseRedirect(request.path)
+
+        send_reset_email(s)
+        
+        messages.add_message(request, messages.SUCCESS, 'Password reset instructions have been sent to your email.')
+        return redirect('index')       
+        
+def password_reset_view(request):
+    if request.method == "GET":
+        if 'token' in request.GET:
+            token = request.GET.get('token')
+            sponsor_id = cache.get('reset_%s' % token)
+
+            request.session
+            
+            if sponsor_id == None:
+                messages.add_message(request, messages.ERROR, 'Could not find your reset request.  Please attempt another password reset, or contact support@snipanet.com for assistance', extra_tags="danger")
+                return redirect('index')
+
+            form = PasswordResetForm(initial={"sponsor_id": sponsor_id})
+            d = {'form': form}
+            return render(request, "sponsor/passwordreset.html", d)
+            
+    if request.method == "POST":
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password']
+            confirm_password = form.cleaned_data['confirm_password']
+            sponsor_id = form.cleaned_data['sponsor_id']
+
+            s = Sponsor.objects.get(id=sponsor_id)
+        
+            if check_complexity(password) == False:
+                messages.add_message(request, messages.ERROR, "Your password was too simple; must have eight or more characters, and include at least one number.  Please try again.", extra_tags="danger")
+                return HttpResponseRedirect(request.get_full_path())
+
+            if password == confirm_password:
+                s.password, s.salt = hash_password(password)
+                s.migrated = True
+                s.save()
+                messages.add_message(request, messages.SUCCESS, "Your password has been changed! Please login to receive subscriber perks.")
+                return redirect('index')
+            else:
+                messages.add_message(request, messages.ERROR, "Your passwords did not match; please try again", extra_tags="danger")
+                return HttpResponseRedirect(request.get_full_path())
 

@@ -13,3 +13,11 @@ class SignupForm(forms.Form):
     password = forms.CharField(max_length=64, widget=widgets.PasswordInput)
     confirm_password = forms.CharField(max_length=64, widget = widgets.PasswordInput)
     auth_key = forms.CharField(max_length=12, widget=widgets.HiddenInput)
+
+class PasswordResetRequestForm(forms.Form):
+    username = forms.CharField(max_length=100, label="Username or Email")
+
+class PasswordResetForm(forms.Form):
+    password = forms.CharField(max_length=64, widget=widgets.PasswordInput)
+    confirm_password = forms.CharField(max_length=64, widget=widgets.PasswordInput)
+    sponsor_id = forms.CharField(max_length=12, widget=widgets.HiddenInput)
