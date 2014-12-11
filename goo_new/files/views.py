@@ -2,6 +2,7 @@ import time
 import hashlib
 import re
 import simplejson as json
+from datetime import datetime
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -15,11 +16,26 @@ SECRET_KEY = settings.GAPPS_KEY
 
 def file_download(request):
     
-    path = request.session['file']
+    file_obj = request.session['file']
+    path = file_obj.path
     if path[:5] == '/devs':
         path = path[5:]
 
-    if True:
+    try:
+        viewed = request.session['list_viewed']
+    except:
+        viewed = False
+        try: 
+            if request.session['download_page'] == True:
+                download_page = True
+        except:
+            download_page = False
+            pass
+    
+    cur_time = int(time.time())
+
+
+    if download_page == True:
 #    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())):
         expire = int(time.time()) + 2400
         token = hashlib.md5("%s?ttl=%s&pass=%s" % (path, expire, SECRET_KEY))
@@ -28,7 +44,23 @@ def file_download(request):
             del request.session['waited']
         except KeyError:
             pass
+        try:
+            del request.session['list_viewed']
+        except KeyError:
+            pass
+        try:
+            del request.session['download_page']
+        except KeyError:
+            pass
+        
+        file_obj.download_count += 1
+        file_obj.last_download = datetime.now()
+        file_obj.save() 
         return redirect('http://cdn.goo.im%s?ttl=%s&token=%s' % (path,expire,token))
+
+    else:
+        request.session['download_page'] = True
+        return render(request, 'files/download.html', {"file": file_obj})
 
 #    request.session['waited'] = int(time.time()) + 10        
 #    return render(request, "files/file_download.html", {"path": path})
@@ -79,9 +111,8 @@ def file_list(request, cur_path=''):
             folders = paginator.page(1)
         except EmptyPage:
             folders = paginator.page(paginator.num_pages)
-
-
         breadcrumbs = [['devs', '/devs']]
+        request.session['list_viewed'] = int(time.time()) + 300
         return render(request, 'files/file_list.html', {"folders": folders, "breadcrumbs": breadcrumbs})
 
     try:
@@ -89,7 +120,7 @@ def file_list(request, cur_path=''):
     except:
         pass
     else:
-        request.session['file'] = query.path
+        request.session['file'] = query
         return file_download(request)
 		
     # List of all the files in the folder
