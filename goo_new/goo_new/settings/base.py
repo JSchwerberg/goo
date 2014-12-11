@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'raven.contrib.django.raven_compat',
     'api',
     'south',
