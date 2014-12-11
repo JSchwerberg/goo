@@ -21,6 +21,7 @@ def file_download(request):
     if path[:5] == '/devs':
         path = path[5:]
 
+    download_page = True
     try:
         viewed = request.session['list_viewed']
     except:
