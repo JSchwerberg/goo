@@ -12,6 +12,6 @@ class IndexView(TemplateView):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['latest_post'] = Post.objects.latest('created')
         context['latest_files'] = File.objects.order_by('-last_download')[:10]
-        context['popular_files'] = File.objects.order_by('-download_count')[:10]
+        context['popular_files'] = File.objects.order_by('-download_count').distinct()[:10]
         return context
 
