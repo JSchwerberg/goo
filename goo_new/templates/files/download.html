@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<form name="download">
+<center>
+<h2><b>File Information for {{ file.path }}</h2><br><br>
+</center>
+<h4>Filename: {{ file.filename }}</h4>
+<h4>MD5: {{ file.md5 }}</h4>
+<h4>File Size: {{ file.filesize }} bytes</h4>
+<h4>Description: {{ file.description }}</h4>
+<h4>Download Count: {{ file.download_count }}</h4>
+<h4>Last Downloaded: {{ file.last_download }} UTC</h4>
+<br>
+<center>
+<form action="#">
+<button type="submit" class="btn btn-default">Download Now</button>
+</form>
+</center>
+
+<script src="{% static 'js/countdown.js' %}"></script>
+{% endblock %}
