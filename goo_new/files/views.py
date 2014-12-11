@@ -19,7 +19,8 @@ def file_download(request):
     if path[:5] == '/devs':
         path = path[5:]
 
-    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())):
+    if True:
+#    if ('sponsor' in request.session) or ('waited' in request.session and request.session['waited'] < int(time.time())):
         expire = int(time.time()) + 2400
         token = hashlib.md5("%s?ttl=%s&pass=%s" % (path, expire, SECRET_KEY))
         token = token.hexdigest()
@@ -29,8 +30,8 @@ def file_download(request):
             pass
         return redirect('http://cdn.goo.im%s?ttl=%s&token=%s' % (path,expire,token))
 
-    request.session['waited'] = int(time.time()) + 10        
-    return render(request, "files/file_download.html", {"path": path})
+#    request.session['waited'] = int(time.time()) + 10        
+#    return render(request, "files/file_download.html", {"path": path})
 
 
 @csrf_exempt
