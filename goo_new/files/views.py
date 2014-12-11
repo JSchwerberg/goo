@@ -194,7 +194,7 @@ def gapps_list(request):
     return render(request, 'files/file_list.html', {"files": files, "breadcrumbs": breadcrumbs})
 
 def gapps_download(request, path):
-    request.session['file'] = '/gapps/' + path
+    request.session['file'] = File.objects.get(path='/devs/gapps/' + path)
     return file_download(request)
 
 def file_search_result_list(request):
