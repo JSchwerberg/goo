@@ -3,12 +3,15 @@
 {% block content %}
 <form name="download">
 <center>
-<h2><b>File Information for {{ file.path }}</h2><br><br>
+<h2><b>File Information for {{ file.filename }}</h2><br><br>
 </center>
-<h4>Filename: {{ file.filename }}</h4>
+<h4>Path: {{ file.path }}</h4>
 <h4>MD5: {{ file.md5 }}</h4>
 <h4>File Size: {{ file.filesize }} bytes</h4>
-<h4>Description: {{ file.description }}</h4>
+{% if file.ro_version != 0 %}<h4>Version: {{ file.ro_version }}</h4>{% endif %}
+{% if file.ro_board != "Null" %}<h4>Device: {{ file.ro_board }}</h4>{% endif %}
+{% if file.ro_developerid != "Nhll" %}<h4> Developer: {{ file.ro_developerid }}</h4>{% endif %}
+<h4>Changelog: {{ file.description }}</h4>
 <h4>Download Count: {{ file.download_count }}</h4>
 <h4>Last Downloaded: {{ file.last_download }} UTC</h4>
 <br>
