@@ -155,7 +155,7 @@ def password_reset_request_view(request):
             try:
                 s = Sponsor.objects.get(email=query)
             except Sponsor.MultipleObjectsReturned:
-                messages.add_message(request, messages.ERROR, 'There are multiple accounts with this email address.  Please use your username, or contact support@snipanet.com for assistance', extra_tage="danger")
+                messages.add_message(request, messages.ERROR, 'There are multiple accounts with this email address.  Please use your username, or contact support@snipanet.com for assistance', extra_tags="danger")
                 return HttpResponseRedirect(request.path)
             except Sponsor.DoesNotExist:
                 messages.add_message(request, messages.ERROR, 'Could not find this email address.  Please try again with your username, or contact support@snipanet.com for assistance', extra_tags="danger")
